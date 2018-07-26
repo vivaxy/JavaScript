@@ -795,6 +795,53 @@ function execute(ast, scope) {
 
 compiler.execute = execute;
 
+function stringify(ast) {
+  function stringifyMemberExpression(ast) {
+    if (ast.type !== astTypes.MEMBER_EXPRESSION) {
+      throw new Error('Error ast.type: ' + ast.type);
+    }
+
+    if (ast.object.type === astTypes.MEMBER_EXPRESSION) {
+      return stringifyMemberExpression(ast.object) + '.' + ast.property.name;
+    } else if (ast.object.type === astTypes.IDENTIFIER) {
+      return ast.object.name + '.' + ast.property.name;
+    }
+    throw new Error('Unexpected ast.object.type: ' + ast.object.type);
+  }
+
+  function stringifyBinaryExpression(ast) {
+    if (ast.type !== astTypes.BINARY_EXPRESSION) {
+      throw new Error('Error ast.type: ' + ast.type);
+    }
+    if (ast.left.type !== astTypes.LITERAL && ast.left.type !== astTypes.IDENTIFIER) {
+      throw new Error('Unexpected ast.left.type: ' + ast.left.type);
+    }
+    if (ast.right.type !== astTypes.LITERAL && ast.right.type !== astTypes.IDENTIFIER) {
+      throw new Error('Unexpected ast.right.type: ' + ast.right.type);
+    }
+
+    return `(${stringifyLiteralOrIdentify(ast.left)} ${ast.operator} ${stringifyLiteralOrIdentify(ast.right)})`;
+  }
+
+  function stringifyLiteralOrIdentify(ast) {
+    if (ast.type !== astTypes.LITERAL && ast.type !== astTypes.IDENTIFIER) {
+      throw new Error('Error ast.type: ' + ast.type);
+    }
+    if (ast.type === astTypes.IDENTIFIER) {
+      return ast.name;
+    }
+    if (typeof ast.value === 'string') {
+      return '\'' + ast.value + '\'';
+    } else if (typeof ast.value === 'number') {
+      return ast.value;
+    }
+    throw new Error('Unexpected typeof ast.value: ' + typeof ast.value);
+  }
+
+}
+
+compiler.stringify = stringify;
+
 function compiler(input, scope) {
   const tokens = tokenizer(input);
   const ast = parser(tokens);
