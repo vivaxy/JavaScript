@@ -813,14 +813,25 @@ function stringify(ast) {
     if (ast.type !== astTypes.BINARY_EXPRESSION) {
       throw new Error('Error ast.type: ' + ast.type);
     }
-    if (ast.left.type !== astTypes.LITERAL && ast.left.type !== astTypes.IDENTIFIER) {
+    let ret = '(';
+    if (ast.left.type === astTypes.MEMBER_EXPRESSION) {
+      ret += stringifyMemberExpression(ast.left);
+    } else if (ast.left.type === astTypes.LITERAL || ast.left.type === astTypes.IDENTIFIER) {
+      ret += stringifyLiteralOrIdentify(ast.left);
+    } else {
       throw new Error('Unexpected ast.left.type: ' + ast.left.type);
     }
-    if (ast.right.type !== astTypes.LITERAL && ast.right.type !== astTypes.IDENTIFIER) {
+
+    ret += ' ' + ast.operator + ' ';
+    if (ast.right.type === astTypes.MEMBER_EXPRESSION) {
+      ret += stringifyMemberExpression(ast.right);
+    } else if (ast.right.type === astTypes.LITERAL || ast.right.type === astTypes.IDENTIFIER) {
+      ret += stringifyLiteralOrIdentify(ast.right);
+    } else {
       throw new Error('Unexpected ast.right.type: ' + ast.right.type);
     }
 
-    return `(${stringifyLiteralOrIdentify(ast.left)} ${ast.operator} ${stringifyLiteralOrIdentify(ast.right)})`;
+    return ret + ')';
   }
 
   function stringifyLiteralOrIdentify(ast) {
