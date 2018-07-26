@@ -14,7 +14,7 @@ const execute = compiler.execute;
 test('tokenizer', (t) => {
   t.deepEqual(tokenizer('{{userGrade}} == 0'), [
     {
-      type: tokenTypes.ARGUMENT,
+      type: tokenTypes.IDENTIFIER,
       value: 'userGrade',
     },
     {
@@ -180,7 +180,7 @@ test('execute', (t) => {
   t.deepEqual(compiler('false && true || false && true'), false);
   t.deepEqual(compiler('true && false || !true'), false);
   t.deepEqual(compiler('undefined === undefined'), true);
-  t.deepEqual(compiler('undefined === {{test}}', {}), true);
+  t.deepEqual(compiler('undefined === {{test}}', { test: undefined }), true);
   t.deepEqual(compiler('1 === undefined'), false);
   t.deepEqual(compiler('null === undefined'), false);
   t.deepEqual(compiler('null === null'), true);

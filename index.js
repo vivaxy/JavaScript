@@ -9,7 +9,6 @@ const tokenTypes = {
   COMPARISON_OPERATOR: 'comparisonOperator', // ==, ===, >, <, <=, >=, !=, !==
   CONDITIONAL_OPERATOR: 'conditionalOperator', // ? :
   LOGICAL_OPERATOR: 'logicalOperator', // &&, ||, !
-  ARGUMENT: 'argument',
   NUMBER: 'number',
   STRING: 'string',
   BOOLEAN: 'boolean',
@@ -67,34 +66,34 @@ const binaryOperatorPrecedence = {
 };
 
 const astFactory = {
-  PROGRAM: (body) => {
+  PROGRAM(body) {
     return { type: astTypes.PROGRAM, body };
   },
-  EXPRESSION_STATEMENT: (expression) => {
+  EXPRESSION_STATEMENT(expression) {
     return { type: astTypes.EXPRESSION_STATEMENT, expression };
   },
-  LITERAL: (value) => {
+  LITERAL(value) {
     return { type: astTypes.LITERAL, value };
   },
-  BINARY_EXPRESSION: (operator, left, right) => {
+  BINARY_EXPRESSION(operator, left, right) {
     return { type: astTypes.BINARY_EXPRESSION, operator, left, right };
   },
-  UNARY_EXPRESSION: (operator, argument) => {
+  UNARY_EXPRESSION(operator, argument) {
     return { type: astTypes.UNARY_EXPRESSION, operator, argument };
   },
-  LOGICAL_EXPRESSION: (operator, left, right) => {
+  LOGICAL_EXPRESSION(operator, left, right) {
     return { type: astTypes.LOGICAL_EXPRESSION, operator, left, right };
   },
-  IDENTIFIER: (name) => {
+  IDENTIFIER(name) {
     return { type: astTypes.IDENTIFIER, name };
   },
-  SEQUENCE_EXPRESSION: (expressions) => {
+  SEQUENCE_EXPRESSION(expressions) {
     return { type: astTypes.SEQUENCE_EXPRESSION, expressions };
   },
-  CONDITIONAL_EXPRESSION: (test, consequent, alternate) => {
+  CONDITIONAL_EXPRESSION(test, consequent, alternate) {
     return { type: astTypes.CONDITIONAL_EXPRESSION, test, consequent, alternate };
   },
-  MEMBER_EXPRESSION: (object, property) => {
+  MEMBER_EXPRESSION(object, property) {
     return { type: astTypes.MEMBER_EXPRESSION, object, property };
   },
 };
@@ -235,7 +234,7 @@ function tokenizer(input) {
         }
         if (input[i + j + 1] === '}') {
           if (value !== '') {
-            pushToken(tokenTypes.ARGUMENT, value, 4);
+            pushToken(tokenTypes.IDENTIFIER, value, 4);
             continue;
           }
         }
@@ -336,7 +335,7 @@ function tokenizer(input) {
 
 compiler.tokenizer = tokenizer;
 
-function parser(tokens, args) {
+function parser(tokens) {
   let length = tokens.length;
 
   function getLogicalExpression(start, end) {
@@ -398,7 +397,6 @@ function parser(tokens, args) {
             prevToken.type === tokenTypes.BOOLEAN ||
             prevToken.type === tokenTypes.IDENTIFIER ||
             prevToken.type === tokenTypes.NULL ||
-            prevToken.type === tokenTypes.ARGUMENT ||
             (
               prevToken.type === tokenTypes.PARENTHESIS &&
               prevToken.value === ')'
@@ -465,7 +463,6 @@ function parser(tokens, args) {
     if (start !== end) {
       return null;
     }
-    maskArguments(start, end);
     const token = tokens[start];
     if (token.type === tokenTypes.IDENTIFIER) {
       return getIdentifier(start, end);
@@ -494,30 +491,6 @@ function parser(tokens, args) {
       return astFactory.LITERAL(token.value);
     }
     throw new Error('Unexpected literal token type: ' + token.type);
-  }
-
-  function maskArguments(start, end) {
-    if (start !== end) {
-      return null;
-    }
-    const token = tokens[start];
-    if (token.type === tokenTypes.ARGUMENT) {
-      token.value = args[token.value];
-      if (typeof token.value === 'string') {
-        token.type = tokenTypes.STRING;
-      } else if (typeof token.value === 'number') {
-        token.type = tokenTypes.NUMBER;
-      } else if (typeof token.value === 'boolean') {
-        token.type = tokenTypes.BOOLEAN;
-      } else if (token.value === null) {
-        token.type = tokenTypes.NULL;
-      } else if (token.value === undefined) {
-        token.type = tokenTypes.IDENTIFIER;
-        token.value = 'undefined';
-      } else {
-        throw new Error('Unexpected argument type: ' + token.value);
-      }
-    }
   }
 
   function getSequenceExpressions(start, end) {
@@ -693,93 +666,94 @@ compiler.parser = parser;
 
 /**
  * @param ast
+ * @param scope containing arguments
  * @returns {*}
  */
-function execute(ast) {
+function execute(ast, scope) {
   if (ast.type === astTypes.PROGRAM) {
     for (let i = 0, l = ast.body.length - 1; i < l; i++) {
-      execute(ast.body[i]);
+      execute(ast.body[i], scope);
     }
-    return execute(ast.body[ast.body.length - 1]);
+    return execute(ast.body[ast.body.length - 1], scope);
   }
   if (ast.type === astTypes.EXPRESSION_STATEMENT) {
-    return execute(ast.expression);
+    return execute(ast.expression, scope);
   }
   if (ast.type === astTypes.SEQUENCE_EXPRESSION) {
     for (let i = 0; i < ast.expressions.length - 1; i++) {
-      execute(ast.expressions[i]);
+      execute(ast.expressions[i], scope);
     }
-    return execute(ast.expressions[ast.expressions.length - 1]);
+    return execute(ast.expressions[ast.expressions.length - 1], scope);
   }
   if (ast.type === astTypes.LOGICAL_EXPRESSION) {
     if (ast.operator === '&&') {
-      return execute(ast.left) && execute(ast.right);
+      return execute(ast.left, scope) && execute(ast.right, scope);
     }
     if (ast.operator === '||') {
-      return execute(ast.left) || execute(ast.right);
+      return execute(ast.left, scope) || execute(ast.right, scope);
     }
     throw new Error('Unexpected LOGICAL_EXPRESSION operator: ' + ast.operator);
   }
   if (ast.type === astTypes.BINARY_EXPRESSION) {
     if (ast.operator === '===') {
-      return execute(ast.left) === execute(ast.right);
+      return execute(ast.left, scope) === execute(ast.right, scope);
     }
     if (ast.operator === '==') {
-      return execute(ast.left) == execute(ast.right);
+      return execute(ast.left, scope) == execute(ast.right, scope);
     }
     if (ast.operator === '>') {
-      return execute(ast.left) > execute(ast.right);
+      return execute(ast.left, scope) > execute(ast.right, scope);
     }
     if (ast.operator === '<') {
-      return execute(ast.left) < execute(ast.right);
+      return execute(ast.left, scope) < execute(ast.right, scope);
     }
     if (ast.operator === '<=') {
-      return execute(ast.left) <= execute(ast.right);
+      return execute(ast.left, scope) <= execute(ast.right, scope);
     }
     if (ast.operator === '>=') {
-      return execute(ast.left) >= execute(ast.right);
+      return execute(ast.left, scope) >= execute(ast.right, scope);
     }
     if (ast.operator === '!=') {
-      return execute(ast.left) != execute(ast.right);
+      return execute(ast.left, scope) != execute(ast.right, scope);
     }
     if (ast.operator === '!==') {
-      return execute(ast.left) !== execute(ast.right);
+      return execute(ast.left, scope) !== execute(ast.right, scope);
     }
     if (ast.operator === '+') {
-      return execute(ast.left) + execute(ast.right);
+      return execute(ast.left, scope) + execute(ast.right, scope);
     }
     if (ast.operator === '-') {
-      return execute(ast.left) - execute(ast.right);
+      return execute(ast.left, scope) - execute(ast.right, scope);
     }
     if (ast.operator === '*') {
-      return execute(ast.left) * execute(ast.right);
+      return execute(ast.left, scope) * execute(ast.right, scope);
     }
     if (ast.operator === '/') {
-      return execute(ast.left) / execute(ast.right);
+      return execute(ast.left, scope) / execute(ast.right, scope);
     }
     if (ast.operator === '%') {
-      return execute(ast.left) % execute(ast.right);
+      return execute(ast.left, scope) % execute(ast.right, scope);
     }
     if (ast.operator === '**') {
-      return execute(ast.left) ** execute(ast.right);
+      return execute(ast.left, scope) ** execute(ast.right, scope);
     }
     if (ast.operator === '&') {
-      return execute(ast.left) & execute(ast.right);
+      return execute(ast.left, scope) & execute(ast.right, scope);
     }
     if (ast.operator === '|') {
-      return execute(ast.left) | execute(ast.right);
+      return execute(ast.left, scope) | execute(ast.right, scope);
     }
     if (ast.operator === '^') {
-      return execute(ast.left) ^ execute(ast.right);
+      return execute(ast.left, scope) ^ execute(ast.right, scope);
     }
     if (ast.operator === '>>') {
-      return execute(ast.left) >> execute(ast.right);
+      return execute(ast.left, scope) >> execute(ast.right, scope);
     }
     if (ast.operator === '<<') {
-      return execute(ast.left) << execute(ast.right);
+      return execute(ast.left, scope) << execute(ast.right, scope);
     }
     if (ast.operator === '>>>') {
-      return execute(ast.left) >>> execute(ast.right);
+      return execute(ast.left, scope) >>> execute(ast.right, scope);
     }
     throw new Error('Unexpected BINARY_EXPRESSION operator: ' + ast.operator);
   }
@@ -808,6 +782,9 @@ function execute(ast) {
     if (ast.name === 'undefined') {
       return undefined;
     }
+    if (scope.hasOwnProperty(ast.name)) {
+      return scope[ast.name];
+    }
     throw new Error('Unexpected identifier name: ' + ast.name);
   }
   if (ast.type === astTypes.CONDITIONAL_EXPRESSION) {
@@ -818,10 +795,10 @@ function execute(ast) {
 
 compiler.execute = execute;
 
-function compiler(input, args) {
+function compiler(input, scope) {
   const tokens = tokenizer(input);
-  const ast = parser(tokens, args);
-  return execute(ast);
+  const ast = parser(tokens);
+  return execute(ast, scope);
 }
 
 module.exports = compiler;
