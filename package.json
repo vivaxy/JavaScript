@@ -1,0 +1,25 @@
+{
+  "name": "javascript",
+  "version": "0.0.0",
+  "description": "JavaScript Complier and Executor",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava",
+    "release:beta": "npm test && standard-version --prerelease beta && npm publish --tag beta && git push --follow-tags",
+    "release": "npm test && standard-version && npm publish && git push --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivaxy/JavaScript.git"
+  },
+  "author": "vivaxy <xyxuye2007@126.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vivaxy/JavaScript/issues"
+  },
+  "homepage": "https://github.com/vivaxy/JavaScript#readme",
+  "dependencies": {
+    "ava": "^0.25.0",
+    "standard-version": "^4.4.0"
+  }
+}
