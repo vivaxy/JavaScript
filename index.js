@@ -13,7 +13,7 @@ const tokenTypes = {
   STRING: 'string',
   BOOLEAN: 'boolean',
   PARENTHESIS: 'parenthesis',
-  LABEL: 'label', // ;, ,, .
+  LABEL: 'label', // ; , . [ ]
   NULL: 'null',
   IDENTIFIER: 'identifier', // 变量, undefined
 };
@@ -128,11 +128,7 @@ function tokenizer(input) {
       i++;
       continue;
     }
-    if (char === ',') {
-      pushToken(tokenTypes.LABEL, char);
-      continue;
-    }
-    if (char === ';') {
+    if (char === ',' || char === ';' || char === '[' || char === ']') {
       pushToken(tokenTypes.LABEL, char);
       continue;
     }
@@ -318,7 +314,7 @@ function tokenizer(input) {
       let value = char;
       let j = i + 1;
       let nextChar = input[j];
-      const breakChars = [';', '+', '-', '*', '/', '<', '>', '=', '(', ')', '%', '&', '|', '^', '~', '!', '?', ':', ',', '.', ' '];
+      const breakChars = [';', '+', '-', '*', '/', '<', '>', '=', '(', ')', '%', '&', '|', '^', '~', '!', '?', ':', ',', '.', ' ', '[', ']'];
       while (nextChar && breakChars.indexOf(nextChar) === -1) {
         value += nextChar;
         j++;
@@ -558,12 +554,15 @@ function parser(inputTokens) {
     if (tokens.length < 3) {
       return null;
     }
-    // identifier + label(.) + identify + ...
+
     if (tokens[0].type !== tokenTypes.IDENTIFIER || tokens[tokens.length - 1].type !== tokenTypes.IDENTIFIER) {
       return null;
     }
+
+    // * ... + (identifier || literal) + label(.) + identify
+    // * ... + (identifier || literal) + label([) + (identify || literal) + label(])
     let expecting = tokenTypes.IDENTIFIER;
-    let identifiers = [];
+    let access = [];
     let i = 0;
     while (
       i < tokens.length && (
@@ -572,7 +571,7 @@ function parser(inputTokens) {
       )
       ) {
       if (tokens[i].type === tokenTypes.IDENTIFIER) {
-        identifiers.push(tokens[i]);
+        access.push(tokens[i]);
       }
       i++;
       if (expecting === tokenTypes.LABEL) {
@@ -586,10 +585,10 @@ function parser(inputTokens) {
       return null;
     }
 
-    let object = astFactory.IDENTIFIER(identifiers[0].value);
+    let object = astFactory.IDENTIFIER(access[0].value);
 
-    for (let j = 1; j < identifiers.length; j++) {
-      object = astFactory.MEMBER_EXPRESSION(object, astFactory.IDENTIFIER(identifiers[j].value));
+    for (let j = 1; j < access.length; j++) {
+      object = astFactory.MEMBER_EXPRESSION(object, astFactory.IDENTIFIER(access[j].value));
     }
     return object;
   }
@@ -752,20 +751,15 @@ function execute(ast, scope) {
     return ast.value;
   }
   if (ast.type === astTypes.UNARY_EXPRESSION) {
-    if (ast.operator === '-') {
-      return -ast.argument.value;
-    }
-    if (ast.operator === '+') {
-      return +ast.argument.value;
-    }
-    if (ast.operator === '!') {
-      return !ast.argument.value;
+    if (ast.operator === '-' ||
+      ast.operator === '+' ||
+      ast.operator === '!' ||
+      ast.operator === '~'
+    ) {
+      return ast.operator + this[ast.argument.type](ast.argument);
     }
     if (ast.operator === 'void') {
-      return undefined;
-    }
-    if (ast.operator === '~') {
-      return ~ast.argument.value;
+      return ast.operator + '(' + this[ast.argument.type](ast.argument) + ')';
     }
     throw new Error('Unexpected UNARY_EXPRESSION operator: ' + ast.operator);
   }
@@ -810,6 +804,16 @@ const stringifyTypes = {
     return '(' + this[ast.left.type](ast.left) + ' ' + ast.operator + ' ' + this[ast.right.type](ast.right) + ')';
   },
   [astTypes.UNARY_EXPRESSION](ast) {
+    if (ast.operator === '-' ||
+      ast.operator === '+' ||
+      ast.operator === '!' ||
+      ast.operator === '~'
+    ) {
+      return ast.operator + this[ast.argument.type](ast.argument);
+    }
+    if (ast.operator === 'void') {
+      return ast.operator + ' ' + this[ast.argument.type](ast.argument);
+    }
     throw new Error('Unexpected ast.type: ' + ast.type);
   },
   [astTypes.LOGICAL_EXPRESSION](ast) {
@@ -821,7 +825,7 @@ const stringifyTypes = {
     }).join(', ');
   },
   [astTypes.CONDITIONAL_EXPRESSION](ast) {
-    return '(' + this[ast.test.type](ast.type) + ' ? ' +
+    return '(' + this[ast.test.type](ast.test) + ' ? ' +
       this[ast.consequent.type](ast.consequent) + ' : ' + this[ast.alternate.type](ast.alternate) + ')';
   },
   [astTypes.MEMBER_EXPRESSION](ast) {
