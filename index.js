@@ -804,7 +804,7 @@ const stringifyTypes = {
     throw new Error('Unexpected typeof ast.value: ' + typeof ast.value);
   },
   [astTypes.IDENTIFIER](ast) {
-    return ast.value;
+    return ast.name;
   },
   [astTypes.BINARY_EXPRESSION](ast) {
     return '(' + this[ast.left.type](ast.left) + ' ' + ast.operator + ' ' + this[ast.right.type](ast.right) + ')';
