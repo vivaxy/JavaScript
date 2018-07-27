@@ -422,7 +422,8 @@ function parser(inputTokens) {
             nextToken.type === tokenTypes.BOOLEAN ||
             nextToken.type === tokenTypes.IDENTIFIER ||
             nextToken.type === tokenTypes.NULL ||
-            nextToken.type === astTypes.BINARY_EXPRESSION
+            nextToken.type === astTypes.BINARY_EXPRESSION ||
+            nextToken.type === astTypes.LOGICAL_EXPRESSION
             // maybe other
           )
         )
@@ -484,7 +485,7 @@ function parser(inputTokens) {
       return null;
     }
     const token = tokens[0];
-    if (token.type === astTypes.BINARY_EXPRESSION || token.type === astTypes.LITERAL || token.type === astTypes.IDENTIFIER) {
+    if (token.type === astTypes.BINARY_EXPRESSION || token.type === astTypes.LOGICAL_EXPRESSION || token.type === astTypes.LITERAL || token.type === astTypes.IDENTIFIER) {
       return token;
     } else if (token.type === tokenTypes.IDENTIFIER) {
       return getIdentifier(tokens);

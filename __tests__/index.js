@@ -305,3 +305,143 @@ test('parenthesis test', (t) => {
   });
 
 });
+
+test('Use case', (t) => {
+
+  t.deepEqual(parser(tokenizer(`'width:'+ (starNoteShowMediaInfo[index].width || '100%') + ';height:' +  (starNoteShowMediaInfo[index].height || '100%') + ';left:' + (starNoteShowMediaInfo[index].left || '0') + ';top:' + (starNoteShowMediaInfo[index].top || '0') + ';'`)), {
+    type: astTypes.PROGRAM,
+    body: [
+      {
+        type: astTypes.EXPRESSION_STATEMENT,
+        expression: {
+          type: astTypes.BINARY_EXPRESSION,
+          operator: '+',
+          left: {
+            type: astTypes.BINARY_EXPRESSION,
+            operator: '+',
+            left: {
+              type: astTypes.BINARY_EXPRESSION,
+              operator: '+',
+              left: {
+                type: astTypes.BINARY_EXPRESSION,
+                operator: '+',
+                left: {
+                  type: astTypes.BINARY_EXPRESSION,
+                  operator: '+',
+                  left: {
+                    type: astTypes.BINARY_EXPRESSION,
+                    operator: '+',
+                    left: {
+                      type: astTypes.BINARY_EXPRESSION,
+                      operator: '+',
+                      left: {
+                        type: astTypes.BINARY_EXPRESSION,
+                        operator: '+',
+                        left: {
+                          type: astTypes.LITERAL,
+                          value: 'width:'
+                        },
+                        right: {
+                          type: astTypes.LOGICAL_EXPRESSION,
+                          operator: '||',
+                          left: {
+                            type: astTypes.MEMBER_EXPRESSION,
+                            object: {
+                              type: astTypes.IDENTIFIER,
+                              name: 'starNoteShowMediaInfo[index]'
+                            },
+                            property: {
+                              type: astTypes.IDENTIFIER,
+                              name: 'width '
+                            }
+                          },
+                          right: {
+                            type: astTypes.LITERAL,
+                            value: '100%'
+                          }
+                        }
+                      },
+                      right: {
+                        type: astTypes.LITERAL,
+                        value: ';height:'
+                      }
+                    },
+                    right: {
+                      type: astTypes.LOGICAL_EXPRESSION,
+                      operator: '||',
+                      left: {
+                        type: astTypes.MEMBER_EXPRESSION,
+                        object: {
+                          type: astTypes.IDENTIFIER,
+                          name: 'starNoteShowMediaInfo[index]'
+                        },
+                        property: {
+                          type: astTypes.IDENTIFIER,
+                          name: 'height '
+                        }
+                      },
+                      right: {
+                        type: astTypes.LITERAL,
+                        value: '100%'
+                      }
+                    }
+                  },
+                  right: {
+                    type: astTypes.LITERAL,
+                    value: ';left:'
+                  }
+                },
+                right: {
+                  type: astTypes.LOGICAL_EXPRESSION,
+                  operator: '||',
+                  left: {
+                    type: astTypes.MEMBER_EXPRESSION,
+                    object: {
+                      type: astTypes.IDENTIFIER,
+                      name: 'starNoteShowMediaInfo[index]'
+                    },
+                    property: {
+                      type: astTypes.IDENTIFIER,
+                      name: 'left '
+                    }
+                  },
+                  right: {
+                    type: astTypes.LITERAL,
+                    value: '0'
+                  }
+                }
+              },
+              right: {
+                type: astTypes.LITERAL,
+                value: ';top:'
+              }
+            },
+            right: {
+              type: astTypes.LOGICAL_EXPRESSION,
+              operator: '||',
+              left: {
+                type: astTypes.MEMBER_EXPRESSION,
+                object: {
+                  type: astTypes.IDENTIFIER,
+                  name: 'starNoteShowMediaInfo[index]'
+                },
+                property: {
+                  type: astTypes.IDENTIFIER,
+                  name: 'top '
+                }
+              },
+              right: {
+                type: astTypes.LITERAL,
+                value: '0'
+              }
+            }
+          },
+          right: {
+            type: astTypes.LITERAL,
+            value: ';'
+          }
+        }
+      }
+    ]
+  });
+});
