@@ -353,7 +353,7 @@ test('Use case', (t) => {
                             },
                             property: {
                               type: astTypes.IDENTIFIER,
-                              name: 'width '
+                              name: 'width'
                             }
                           },
                           right: {
@@ -378,7 +378,7 @@ test('Use case', (t) => {
                         },
                         property: {
                           type: astTypes.IDENTIFIER,
-                          name: 'height '
+                          name: 'height'
                         }
                       },
                       right: {
@@ -403,7 +403,7 @@ test('Use case', (t) => {
                     },
                     property: {
                       type: astTypes.IDENTIFIER,
-                      name: 'left '
+                      name: 'left'
                     }
                   },
                   right: {
@@ -428,7 +428,7 @@ test('Use case', (t) => {
                 },
                 property: {
                   type: astTypes.IDENTIFIER,
-                  name: 'top '
+                  name: 'top'
                 }
               },
               right: {

@@ -318,7 +318,7 @@ function tokenizer(input) {
       let value = char;
       let j = i + 1;
       let nextChar = input[j];
-      const breakChars = [';', '+', '-', '*', '/', '<', '>', '=', '(', ')', '%', '&', '|', '^', '~', '!', '?', ':', ',', '.'];
+      const breakChars = [';', '+', '-', '*', '/', '<', '>', '=', '(', ')', '%', '&', '|', '^', '~', '!', '?', ':', ',', '.', ' '];
       while (nextChar && breakChars.indexOf(nextChar) === -1) {
         value += nextChar;
         j++;
