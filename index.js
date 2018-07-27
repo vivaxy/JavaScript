@@ -335,18 +335,51 @@ function tokenizer(input) {
 
 compiler.tokenizer = tokenizer;
 
-function parser(tokens) {
-  let length = tokens.length;
+function parser(inputTokens) {
 
-  function getLogicalExpression(start, end) {
+  return astFactory.PROGRAM(getStatements(inputTokens));
+
+  function getGrouping(tokens) {
+    let i = 0;
+    let retTokens = [];
+    while (i < tokens.length) {
+
+      const token = tokens[i];
+      if (token.type === tokenTypes.PARENTHESIS && token.value === '(') {
+        const { expression, offset } = getGrouping(tokens.slice(i + 1));
+        retTokens.push(expression);
+        i += offset;
+      } else if (token.type === tokenTypes.PARENTHESIS && token.value === ')') {
+        return {
+          expression: getExpression(retTokens),
+          offset: i + 1,
+        };
+      } else {
+        retTokens.push({
+          type: token.type,
+          value: token.value,
+          isToken: true,
+        });
+      }
+      i++;
+    }
+
+    return {
+      expression: getExpression(retTokens),
+      offset: i,
+    }
+
+  }
+
+  function getLogicalExpression(tokens) {
     let logicalExpressionIndex = -1;
-    for (let i = end; i >= start; i--) {
+    for (let i = tokens.length - 1; i >= 0; i--) {
       // && precedence is higher than ||
       if (tokens[i].type === tokenTypes.LOGICAL_OPERATOR && tokens[i].value === '&&') {
         logicalExpressionIndex = i;
       }
     }
-    for (let i = end; i >= start; i--) {
+    for (let i = tokens.length - 1; i >= 0; i--) {
       if (tokens[i].type === tokenTypes.LOGICAL_OPERATOR && tokens[i].value === '||') {
         logicalExpressionIndex = i;
       }
@@ -355,28 +388,21 @@ function parser(tokens) {
     if (logicalExpressionIndex !== -1) {
       return astFactory.LOGICAL_EXPRESSION(
         tokens[logicalExpressionIndex].value,
-        walk(start, logicalExpressionIndex - 1),
-        walk(logicalExpressionIndex + 1, end),
+        getExpression(tokens.slice(0, logicalExpressionIndex)),
+        getExpression(tokens.slice(logicalExpressionIndex + 1)),
       );
     }
     return null;
   }
 
-  function getBinaryExpression(start, end) {
+  function getBinaryExpression(tokens) {
     let operatorIndex = -1;
-    let i = start;
-    while (i <= end) {
+    let i = tokens.length - 1;
+    while (i >= 0) {
       const token = tokens[i];
-      if (token.type === tokenTypes.PARENTHESIS && token.value === '(') {
-        const groupEnd = getGroupingEnd(i, end);
-        if (groupEnd === -1) {
-          throw new Error('Grouping not match');
-        }
-        i = groupEnd + 1;
-        continue;
-      }
-      const prevToken = tokens[i - 1];
+      const nextToken = tokens[i - 1];
       if (
+        nextToken &&
         (
           (
             token.type === tokenTypes.ARITHMETIC_OPERATOR ||
@@ -390,17 +416,14 @@ function parser(tokens) {
               )
             )
           ) &&
-          prevToken &&
           (
-            prevToken.type === tokenTypes.NUMBER ||
-            prevToken.type === tokenTypes.STRING ||
-            prevToken.type === tokenTypes.BOOLEAN ||
-            prevToken.type === tokenTypes.IDENTIFIER ||
-            prevToken.type === tokenTypes.NULL ||
-            (
-              prevToken.type === tokenTypes.PARENTHESIS &&
-              prevToken.value === ')'
-            )
+            nextToken.type === tokenTypes.NUMBER ||
+            nextToken.type === tokenTypes.STRING ||
+            nextToken.type === tokenTypes.BOOLEAN ||
+            nextToken.type === tokenTypes.IDENTIFIER ||
+            nextToken.type === tokenTypes.NULL ||
+            nextToken.type === astTypes.BINARY_EXPRESSION
+            // maybe other
           )
         )
       ) {
@@ -408,43 +431,40 @@ function parser(tokens) {
         if (operatorIndex === -1) {
           operatorIndex = i;
         } else if (operatorIndex !== -1) {
-          const prevToken = tokens[operatorIndex].value;
+          const nextToken = tokens[operatorIndex].value;
           const currToken = token.value;
-          if (!binaryOperatorPrecedence[prevToken]) {
-            throw new Error('Missing operator precedence: ' + prevToken);
+          if (!binaryOperatorPrecedence[nextToken]) {
+            throw new Error('Missing operator precedence: ' + nextToken);
           }
           if (!binaryOperatorPrecedence[currToken]) {
             throw new Error('Missing operator precedence: ' + currToken);
           }
-          if (binaryOperatorPrecedence[prevToken] > binaryOperatorPrecedence[currToken]) {
+          if (binaryOperatorPrecedence[nextToken] > binaryOperatorPrecedence[currToken]) {
             operatorIndex = i;
           }
         }
       }
-      i++;
+      i--;
     }
     if (operatorIndex === -1) {
       return null;
     }
-    if (operatorIndex === start) {
+    if (operatorIndex === 0) {
       return null;
     }
-    if (operatorIndex === end) {
+    if (operatorIndex === tokens.length - 1) {
       return null;
     }
 
     return astFactory.BINARY_EXPRESSION(
       tokens[operatorIndex].value,
-      walk(start, operatorIndex - 1),
-      walk(operatorIndex + 1, end),
+      getExpression(tokens.slice(0, operatorIndex)),
+      getExpression(tokens.slice(operatorIndex + 1)),
     );
   }
 
-  function getUnaryExpression(start, end) {
-    if (getGroupingEnd(start + 1, end) === -1 && end - start !== 1) {
-      return null;
-    }
-    const token = tokens[start];
+  function getUnaryExpression(tokens) {
+    const token = tokens[0];
     if (
       (token.type === tokenTypes.ARITHMETIC_OPERATOR && (
         token.value === '-' ||
@@ -454,56 +474,58 @@ function parser(tokens) {
       (token.type === tokenTypes.LABEL && token.value === 'void') ||
       (token.type === tokenTypes.BITWISE_OPERATOR && token.value === '~')
     ) {
-      return astFactory.UNARY_EXPRESSION(token.value, getLiteralOrIdentifier(start + 1, end));
+      return astFactory.UNARY_EXPRESSION(token.value, getLiteralOrIdentifier(tokens.slice(1)));
     }
     return null;
   }
 
-  function getLiteralOrIdentifier(start, end) {
-    if (start !== end) {
+  function getLiteralOrIdentifier(tokens) {
+    if (tokens.length !== 1) {
       return null;
     }
-    const token = tokens[start];
-    if (token.type === tokenTypes.IDENTIFIER) {
-      return getIdentifier(start, end);
+    const token = tokens[0];
+    if (token.type === astTypes.BINARY_EXPRESSION || token.type === astTypes.LITERAL || token.type === astTypes.IDENTIFIER) {
+      return token;
+    } else if (token.type === tokenTypes.IDENTIFIER) {
+      return getIdentifier(tokens);
     } else {
-      return getLiteral(start, end);
+      return getLiteral(tokens);
     }
   }
 
-  function getIdentifier(start, end) {
-    if (start !== end) {
+  function getIdentifier(tokens) {
+    if (tokens.length !== 1) {
       throw new Error('Unexpected identifier count');
     }
-    const token = tokens[start];
+    const token = tokens[0];
     if (token.type === tokenTypes.IDENTIFIER) {
       return astFactory.IDENTIFIER(token.value);
     }
     throw new Error('Unexpected identifier token type: ' + token.type);
   }
 
-  function getLiteral(start, end) {
-    if (start !== end) {
+  function getLiteral(tokens) {
+    if (tokens.length !== 1) {
       throw new Error('Unexpected literal count');
     }
-    const token = tokens[start];
+    const token = tokens[0];
     if (token.type === tokenTypes.NUMBER || token.type === tokenTypes.STRING || token.type === tokenTypes.BOOLEAN || token.type === tokenTypes.NULL) {
       return astFactory.LITERAL(token.value);
     }
     throw new Error('Unexpected literal token type: ' + token.type);
   }
 
-  function getSequenceExpressions(start, end) {
+  function getSequenceExpressions(tokens) {
     let sequenceExpressions = [];
-    let prevStart = start;
-    for (let i = start; i <= end; i++) {
+    let prevStart = 0;
+    for (let i = 0; i < tokens.length; i++) {
       if (tokens[i].type === tokenTypes.LABEL && tokens[i].value === ',') {
-        sequenceExpressions.push(walk(prevStart, i - 1));
+        sequenceExpressions.push(getExpression(tokens.slice(prevStart, i)));
         prevStart = i + 1;
       }
     }
-    if (prevStart !== start) {
-      sequenceExpressions.push(walk(prevStart, end));
+    if (prevStart !== 0) {
+      sequenceExpressions.push(getExpression(tokens.slice(prevStart)));
     }
     if (sequenceExpressions.length) {
       return astFactory.SEQUENCE_EXPRESSION(sequenceExpressions);
@@ -511,32 +533,10 @@ function parser(tokens) {
     return null;
   }
 
-  function getGroupingEnd(start, end) {
-    let token = tokens[start];
-    if (token.type !== tokenTypes.PARENTHESIS || token.value !== '(') {
-      return -1;
-    }
-    let depth = 1;
-    for (let i = start + 1; i <= end; i++) {
-      token = tokens[i];
-      if (token.type === tokenTypes.PARENTHESIS && token.value === '(') {
-        depth++;
-      }
-      if (token.type === tokenTypes.PARENTHESIS && token.value === ')') {
-        depth--;
-        if (depth === 0) {
-          return i;
-        }
-      }
-    }
-
-    return -1;
-  }
-
-  function getConditionalExpression(start, end) {
+  function getConditionalExpression(tokens) {
     let questionMarkIndex = -1;
     let colonIndex = -1;
-    for (let i = start; i <= end; i++) {
+    for (let i = 0; i < tokens.length; i++) {
       if (questionMarkIndex !== -1 && colonIndex !== -1) {
         break;
       }
@@ -550,22 +550,22 @@ function parser(tokens) {
     if (questionMarkIndex === -1 || colonIndex === -1) {
       return null;
     }
-    return astFactory.CONDITIONAL_EXPRESSION(walk(start, questionMarkIndex - 1), walk(questionMarkIndex + 1, colonIndex - 1), walk(colonIndex + 1, end));
+    return astFactory.CONDITIONAL_EXPRESSION(getExpression(tokens.slice(0, questionMarkIndex)), getExpression(tokens.slice(questionMarkIndex + 1, colonIndex)), getExpression(tokens.slice(colonIndex + 1)));
   }
 
-  function getMemberExpression(start, end) {
-    if (end - start < 2) {
+  function getMemberExpression(tokens) {
+    if (tokens.length < 3) {
       return null;
     }
     // identifier + label(.) + identify + ...
-    if (tokens[start].type !== tokenTypes.IDENTIFIER || tokens[end].type !== tokenTypes.IDENTIFIER) {
+    if (tokens[0].type !== tokenTypes.IDENTIFIER || tokens[tokens.length - 1].type !== tokenTypes.IDENTIFIER) {
       return null;
     }
     let expecting = tokenTypes.IDENTIFIER;
     let identifiers = [];
-    let i = start;
+    let i = 0;
     while (
-      i <= end && (
+      i < tokens.length && (
         (tokens[i].type === expecting && expecting === tokenTypes.LABEL && tokens[i].value === '.')
         || (tokens[i].type === expecting && expecting === tokenTypes.IDENTIFIER)
       )
@@ -581,7 +581,7 @@ function parser(tokens) {
       }
     }
 
-    if (expecting === tokenTypes.IDENTIFIER && i !== end) {
+    if (expecting === tokenTypes.IDENTIFIER && i !== tokens.length - 1) {
       return null;
     }
 
@@ -593,47 +593,38 @@ function parser(tokens) {
     return object;
   }
 
-  function walk(start, end) {
-    if (start > end) {
-      throw new Error('Walk: start > end');
-    }
-
-    const groupEnd = getGroupingEnd(start, end); // 20
-    if (groupEnd === end) {
-      return walk(start + 1, end - 1);
-    }
-
-    const literal = getLiteralOrIdentifier(start, end);
+  function getExpression(tokens) {
+    const literal = getLiteralOrIdentifier(tokens);
     if (literal) {
       return literal;
     }
 
-    const sequenceExpressions = getSequenceExpressions(start, end); // 1
+    const sequenceExpressions = getSequenceExpressions(tokens); // 1
     if (sequenceExpressions) {
       return sequenceExpressions;
     }
 
-    const conditionalExpression = getConditionalExpression(start, end); // 4
+    const conditionalExpression = getConditionalExpression(tokens); // 4
     if (conditionalExpression) {
       return conditionalExpression;
     }
 
-    const logicalExpression = getLogicalExpression(start, end); // 5, 6
+    const logicalExpression = getLogicalExpression(tokens); // 5, 6
     if (logicalExpression) {
       return logicalExpression;
     }
 
-    const binaryExpression = getBinaryExpression(start, end); // 7, 8, 9, 10, 11, 12, 13, 14, 15
+    const binaryExpression = getBinaryExpression(tokens); // 7, 8, 9, 10, 11, 12, 13, 14, 15
     if (binaryExpression) {
       return binaryExpression;
     }
 
-    const unaryExpression = getUnaryExpression(start, end); // 16
+    const unaryExpression = getUnaryExpression(tokens); // 16
     if (unaryExpression) {
       return unaryExpression;
     }
 
-    const memberExpression = getMemberExpression(start, end); // 19
+    const memberExpression = getMemberExpression(tokens); // 19
     if (memberExpression) {
       return memberExpression;
     }
@@ -641,25 +632,24 @@ function parser(tokens) {
     throw new Error('Unexpected expression');
   }
 
-  function getStatements() {
+  function getStatements(tokens) {
     let start = 0;
-    const end = length - 1;
+    const end = tokens.length - 1;
     let statements = [];
     for (let i = start; i <= end; i++) {
       if (tokens[i].type === tokenTypes.LABEL && tokens[i].value === ';') {
-        statements.push(astFactory.EXPRESSION_STATEMENT(walk(start, i - 1)));
+        statements.push(astFactory.EXPRESSION_STATEMENT(getGrouping(tokens.slice(start, i)).expression));
         start = i + 1;
       }
     }
     if (tokens[end].type === tokenTypes.LABEL && tokens[end].value === ';') {
-      statements.push(astFactory.EXPRESSION_STATEMENT(walk(start, end - 1)));
+      statements.push(astFactory.EXPRESSION_STATEMENT(getGrouping(tokens.slice(start, end)).expression));
     } else {
-      statements.push(astFactory.EXPRESSION_STATEMENT(walk(start, end)));
+      statements.push(astFactory.EXPRESSION_STATEMENT(getGrouping(tokens.slice(start, end + 1)).expression));
     }
     return statements;
   }
 
-  return astFactory.PROGRAM(getStatements());
 }
 
 compiler.parser = parser;
@@ -813,11 +803,13 @@ function stringify(ast) {
     if (ast.type !== astTypes.BINARY_EXPRESSION) {
       throw new Error('Error ast.type: ' + ast.type);
     }
-    let ret = '(';
+    let ret = '';
     if (ast.left.type === astTypes.MEMBER_EXPRESSION) {
       ret += stringifyMemberExpression(ast.left);
     } else if (ast.left.type === astTypes.LITERAL || ast.left.type === astTypes.IDENTIFIER) {
       ret += stringifyLiteralOrIdentify(ast.left);
+    } else if (ast.left.type === astTypes.BINARY_EXPRESSION) {
+      ret += stringifyBinaryExpression(ast.left);
     } else {
       throw new Error('Unexpected ast.left.type: ' + ast.left.type);
     }
@@ -827,11 +819,13 @@ function stringify(ast) {
       ret += stringifyMemberExpression(ast.right);
     } else if (ast.right.type === astTypes.LITERAL || ast.right.type === astTypes.IDENTIFIER) {
       ret += stringifyLiteralOrIdentify(ast.right);
+    } else if (ast.right.type === astTypes.BINARY_EXPRESSION) {
+      ret += stringifyBinaryExpression(ast.right);
     } else {
       throw new Error('Unexpected ast.right.type: ' + ast.right.type);
     }
 
-    return ret + ')';
+    return '(' + ret + ')';
   }
 
   function stringifyLiteralOrIdentify(ast) {
@@ -847,6 +841,45 @@ function stringify(ast) {
       return ast.value;
     }
     throw new Error('Unexpected typeof ast.value: ' + typeof ast.value);
+  }
+
+  function stringifyConditionalExpression(ast) {
+    let ret = '';
+    if (ast.test.type === astTypes.LITERAL || ast.test.type === astTypes.IDENTIFIER) {
+      ret += stringifyLiteralOrIdentify(ast.test);
+    } else if (ast.test.type === astTypes.BINARY_EXPRESSION) {
+      ret += stringifyBinaryExpression(ast.test);
+    } else if (ast.test.type === astTypes.MEMBER_EXPRESSION) {
+      ret += stringifyMemberExpression(ast.test);
+    } else {
+      throw new Error('Unexpected ast.test.type: ' + ast.test.type);
+    }
+
+    ret += ' ? ';
+
+    if (ast.consequent.type === astTypes.LITERAL || ast.consequent.type === astTypes.IDENTIFIER) {
+      ret += stringifyLiteralOrIdentify(ast.consequent);
+    } else if (ast.consequent.type === astTypes.BINARY_EXPRESSION) {
+      ret += stringifyBinaryExpression(ast.consequent);
+    } else if (ast.consequent.type === astTypes.MEMBER_EXPRESSION) {
+      ret += stringifyMemberExpression(ast.consequent);
+    } else {
+      throw new Error('Unexpected ast.consequent.type: ' + ast.consequent.type);
+    }
+
+    ret += ' : ';
+
+    if (ast.alternate.type === astTypes.LITERAL || ast.alternate.type === astTypes.IDENTIFIER) {
+      ret += stringifyLiteralOrIdentify(ast.alternate);
+    } else if (ast.alternate.type === astTypes.BINARY_EXPRESSION) {
+      ret += stringifyBinaryExpression(ast.alternate);
+    } else if (ast.alternate.type === astTypes.MEMBER_EXPRESSION) {
+      ret += stringifyMemberExpression(ast.alternate);
+    } else {
+      throw new Error('Unexpected ast.alternate.type: ' + ast.alternate.type);
+    }
+
+    return '(' + ret + ')';
   }
 
 }

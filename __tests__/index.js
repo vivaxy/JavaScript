@@ -248,3 +248,60 @@ test('member expression', (t) => {
     ],
   });
 });
+
+test('parenthesis test', (t) => {
+
+  t.deepEqual(parser(tokenizer('1 * (2 + (3 - 3) + 2) - 1')), {
+    type: astTypes.PROGRAM,
+    body: [
+      {
+        type: astTypes.EXPRESSION_STATEMENT,
+        expression: {
+          type: astTypes.BINARY_EXPRESSION,
+          operator: '-',
+          left: {
+            type: astTypes.BINARY_EXPRESSION,
+            operator: '*',
+            left: {
+              type: astTypes.LITERAL,
+              value: 1,
+            },
+            right: {
+              type: astTypes.BINARY_EXPRESSION,
+              operator: '+',
+              left: {
+                type: astTypes.BINARY_EXPRESSION,
+                operator: '+',
+                left: {
+                  type: astTypes.LITERAL,
+                  value: 2,
+                },
+                right: {
+                  type: astTypes.BINARY_EXPRESSION,
+                  operator: '-',
+                  left: {
+                    type: astTypes.LITERAL,
+                    value: 3,
+                  },
+                  right: {
+                    type: astTypes.LITERAL,
+                    value: 3,
+                  },
+                },
+              },
+              right: {
+                type: astTypes.LITERAL,
+                value: 2,
+              }
+            },
+          },
+          right: {
+            type: astTypes.LITERAL,
+            value: 1,
+          },
+        },
+      },
+    ],
+  });
+
+});
