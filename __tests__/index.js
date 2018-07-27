@@ -447,6 +447,6 @@ test('Use case', (t) => {
   });
 });
 
-test.only('stringify', (t) => {
+test('stringify', (t) => {
   t.is(stringify(parser(tokenizer('1 * (2 + (3 - 3) + 2) - 1'))), '((1 * ((2 + (3 - 3)) + 2)) - 1)');
 });
