@@ -786,103 +786,51 @@ function execute(ast, scope) {
 
 compiler.execute = execute;
 
-function stringify(ast) {
-  function stringifyMemberExpression(ast) {
-    if (ast.type !== astTypes.MEMBER_EXPRESSION) {
-      throw new Error('Error ast.type: ' + ast.type);
-    }
-
-    if (ast.object.type === astTypes.MEMBER_EXPRESSION) {
-      return stringifyMemberExpression(ast.object) + '.' + ast.property.name;
-    } else if (ast.object.type === astTypes.IDENTIFIER) {
-      return ast.object.name + '.' + ast.property.name;
-    }
-    throw new Error('Unexpected ast.object.type: ' + ast.object.type);
-  }
-
-  function stringifyBinaryExpression(ast) {
-    if (ast.type !== astTypes.BINARY_EXPRESSION) {
-      throw new Error('Error ast.type: ' + ast.type);
-    }
-    let ret = '';
-    if (ast.left.type === astTypes.MEMBER_EXPRESSION) {
-      ret += stringifyMemberExpression(ast.left);
-    } else if (ast.left.type === astTypes.LITERAL || ast.left.type === astTypes.IDENTIFIER) {
-      ret += stringifyLiteralOrIdentify(ast.left);
-    } else if (ast.left.type === astTypes.BINARY_EXPRESSION) {
-      ret += stringifyBinaryExpression(ast.left);
-    } else {
-      throw new Error('Unexpected ast.left.type: ' + ast.left.type);
-    }
-
-    ret += ' ' + ast.operator + ' ';
-    if (ast.right.type === astTypes.MEMBER_EXPRESSION) {
-      ret += stringifyMemberExpression(ast.right);
-    } else if (ast.right.type === astTypes.LITERAL || ast.right.type === astTypes.IDENTIFIER) {
-      ret += stringifyLiteralOrIdentify(ast.right);
-    } else if (ast.right.type === astTypes.BINARY_EXPRESSION) {
-      ret += stringifyBinaryExpression(ast.right);
-    } else {
-      throw new Error('Unexpected ast.right.type: ' + ast.right.type);
-    }
-
-    return '(' + ret + ')';
-  }
-
-  function stringifyLiteralOrIdentify(ast) {
-    if (ast.type !== astTypes.LITERAL && ast.type !== astTypes.IDENTIFIER) {
-      throw new Error('Error ast.type: ' + ast.type);
-    }
-    if (ast.type === astTypes.IDENTIFIER) {
-      return ast.name;
-    }
+const stringifyTypes = {
+  [astTypes.PROGRAM](ast) {
+    return ast.body.map((_ast) => {
+      return this[astTypes.EXPRESSION_STATEMENT](_ast);
+    }).join(';\n');
+  },
+  [astTypes.EXPRESSION_STATEMENT](ast) {
+    return this[ast.expression.type](ast.expression);
+  },
+  [astTypes.LITERAL](ast) {
     if (typeof ast.value === 'string') {
       return '\'' + ast.value + '\'';
     } else if (typeof ast.value === 'number') {
       return ast.value;
     }
     throw new Error('Unexpected typeof ast.value: ' + typeof ast.value);
-  }
+  },
+  [astTypes.IDENTIFIER](ast) {
+    return ast.value;
+  },
+  [astTypes.BINARY_EXPRESSION](ast) {
+    return '(' + this[ast.left.type](ast.left) + ' ' + ast.operator + ' ' + this[ast.right.type](ast.right) + ')';
+  },
+  [astTypes.UNARY_EXPRESSION](ast) {
+    throw new Error('Unexpected ast.type: ' + ast.type);
+  },
+  [astTypes.LOGICAL_EXPRESSION](ast) {
+    return '(' + this[ast.left.type](ast.left) + ' ' + ast.operator + ' ' + this[ast.right.type](ast.right) + ')';
+  },
+  [astTypes.SEQUENCE_EXPRESSION](ast) {
+    return ast.expressions.map((_ast) => {
+      return this[astTypes.EXPRESSION_STATEMENT](_ast);
+    }).join(', ');
+  },
+  [astTypes.CONDITIONAL_EXPRESSION](ast) {
+    return '(' + this[ast.test.type](ast.type) + ' ? ' +
+      this[ast.consequent.type](ast.consequent) + ' : ' + this[ast.alternate.type](ast.alternate) + ')';
+  },
+  [astTypes.MEMBER_EXPRESSION](ast) {
+    return this[ast.object.type](ast.object) + '.' + ast.property.name;
+  },
+};
 
-  function stringifyConditionalExpression(ast) {
-    let ret = '';
-    if (ast.test.type === astTypes.LITERAL || ast.test.type === astTypes.IDENTIFIER) {
-      ret += stringifyLiteralOrIdentify(ast.test);
-    } else if (ast.test.type === astTypes.BINARY_EXPRESSION) {
-      ret += stringifyBinaryExpression(ast.test);
-    } else if (ast.test.type === astTypes.MEMBER_EXPRESSION) {
-      ret += stringifyMemberExpression(ast.test);
-    } else {
-      throw new Error('Unexpected ast.test.type: ' + ast.test.type);
-    }
-
-    ret += ' ? ';
-
-    if (ast.consequent.type === astTypes.LITERAL || ast.consequent.type === astTypes.IDENTIFIER) {
-      ret += stringifyLiteralOrIdentify(ast.consequent);
-    } else if (ast.consequent.type === astTypes.BINARY_EXPRESSION) {
-      ret += stringifyBinaryExpression(ast.consequent);
-    } else if (ast.consequent.type === astTypes.MEMBER_EXPRESSION) {
-      ret += stringifyMemberExpression(ast.consequent);
-    } else {
-      throw new Error('Unexpected ast.consequent.type: ' + ast.consequent.type);
-    }
-
-    ret += ' : ';
-
-    if (ast.alternate.type === astTypes.LITERAL || ast.alternate.type === astTypes.IDENTIFIER) {
-      ret += stringifyLiteralOrIdentify(ast.alternate);
-    } else if (ast.alternate.type === astTypes.BINARY_EXPRESSION) {
-      ret += stringifyBinaryExpression(ast.alternate);
-    } else if (ast.alternate.type === astTypes.MEMBER_EXPRESSION) {
-      ret += stringifyMemberExpression(ast.alternate);
-    } else {
-      throw new Error('Unexpected ast.alternate.type: ' + ast.alternate.type);
-    }
-
-    return '(' + ret + ')';
-  }
-
+function stringify(ast) {
+  return stringifyTypes[ast.type](ast);
 }
 
 compiler.stringify = stringify;

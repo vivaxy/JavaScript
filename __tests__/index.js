@@ -10,6 +10,7 @@ const astTypes = compiler.astTypes;
 const tokenizer = compiler.tokenizer;
 const parser = compiler.parser;
 const execute = compiler.execute;
+const stringify = compiler.stringify;
 
 test('tokenizer', (t) => {
   t.deepEqual(tokenizer('{{userGrade}} == 0'), [
@@ -444,4 +445,8 @@ test('Use case', (t) => {
       }
     ]
   });
+});
+
+test.only('stringify', (t) => {
+  t.is(stringify(parser(tokenizer('1 * (2 + (3 - 3) + 2) - 1'))), '((1 * ((2 + (3 - 3)) + 2)) - 1)');
 });
