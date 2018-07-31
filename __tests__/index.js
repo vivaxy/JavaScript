@@ -8,11 +8,10 @@ const test = require('ava');
 const fse = require('fs-extra');
 const globP = require('glob-promise');
 
-const compiler = require('../index.js');
-const tokenizer = compiler.tokenizer;
-const parser = compiler.parser;
-const execute = compiler.execute;
-const stringify = compiler.stringify;
+const tokenizer = require('../lib/tokenizer.js');
+const parser = require('../lib/parser.js');
+const execute = require('../lib/execute.js');
+const stringify = require('../lib/stringify.js');
 
 test('tokenizer', async(t) => {
   const baseDir = path.join(__dirname, 'fixtures', 'tokenizer');
