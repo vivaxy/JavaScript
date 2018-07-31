@@ -1,0 +1,22 @@
+[
+  {
+    "type": "string",
+    "value": "note-"
+  },
+  {
+    "type": "arithmeticOperator",
+    "value": "+"
+  },
+  {
+    "type": "identifier",
+    "value": "item"
+  },
+  {
+    "type": "label",
+    "value": "."
+  },
+  {
+    "type": "identifier",
+    "value": "noteId"
+  }
+]

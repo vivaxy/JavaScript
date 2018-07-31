@@ -18,8 +18,11 @@
     "url": "https://github.com/vivaxy/JavaScript/issues"
   },
   "homepage": "https://github.com/vivaxy/JavaScript#readme",
-  "dependencies": {
+  "devDependencies": {
     "ava": "^0.25.0",
+    "fs-extra": "^7.0.0",
+    "glob": "^7.1.2",
+    "glob-promise": "^3.4.0",
     "standard-version": "^4.4.0"
   }
 }

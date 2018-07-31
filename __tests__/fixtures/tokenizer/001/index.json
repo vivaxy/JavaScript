@@ -1,0 +1,14 @@
+[
+  {
+    "type": "string",
+    "value": "test"
+  },
+  {
+    "type": "comparisonOperator",
+    "value": "==="
+  },
+  {
+    "type": "string",
+    "value": "value"
+  }
+]

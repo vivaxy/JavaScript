@@ -2,45 +2,11 @@
  * @since 20180503 11:40
  * @author vivaxy
  */
+const astFactory = require('./types/ast-types.js');
+const tokenFactory = require('./types/token-types.js');
 
-const tokenTypes = {
-  ARITHMETIC_OPERATOR: 'arithmeticOperator', // +(二元), -(二元), /, *, %, **, ++, --, -(一元), +(一元)
-  BITWISE_OPERATOR: 'bitwiseOperator', // &, |, ^, ~, <<, >>, >>>
-  COMPARISON_OPERATOR: 'comparisonOperator', // ==, ===, >, <, <=, >=, !=, !==
-  CONDITIONAL_OPERATOR: 'conditionalOperator', // ? :
-  LOGICAL_OPERATOR: 'logicalOperator', // &&, ||, !
-  NUMBER: 'number',
-  STRING: 'string',
-  BOOLEAN: 'boolean',
-  PARENTHESIS: 'parenthesis',
-  LABEL: 'label', // ; , . [ ]
-  NULL: 'null',
-  IDENTIFIER: 'identifier', // 变量, undefined
-};
-
-compiler.tokenTypes = tokenTypes;
-
-const astTypes = {
-  PROGRAM: 'Program',
-  EXPRESSION_STATEMENT: 'ExpressionStatement',
-  LITERAL: 'Literal',
-  BINARY_EXPRESSION: 'BinaryExpression',
-  /**
-   * void
-   * +
-   * -
-   * !
-   */
-  UNARY_EXPRESSION: 'UnaryExpression',
-  LOGICAL_EXPRESSION: 'LogicalExpression',
-  IDENTIFIER: 'Identifier',
-  SEQUENCE_EXPRESSION: 'SequenceExpression',
-  CONDITIONAL_EXPRESSION: 'ConditionalExpression',
-
-  MEMBER_EXPRESSION: 'MemberExpression',
-};
-
-compiler.astTypes = astTypes;
+const astTypes = astFactory.astTypes;
+const tokenTypes = tokenFactory.tokenTypes;
 
 /**
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
@@ -64,41 +30,6 @@ const binaryOperatorPrecedence = {
   '^': 8,
   '|': 7,
 };
-
-const astFactory = {
-  PROGRAM(body) {
-    return { type: astTypes.PROGRAM, body };
-  },
-  EXPRESSION_STATEMENT(expression) {
-    return { type: astTypes.EXPRESSION_STATEMENT, expression };
-  },
-  LITERAL(value) {
-    return { type: astTypes.LITERAL, value };
-  },
-  BINARY_EXPRESSION(operator, left, right) {
-    return { type: astTypes.BINARY_EXPRESSION, operator, left, right };
-  },
-  UNARY_EXPRESSION(operator, argument) {
-    return { type: astTypes.UNARY_EXPRESSION, operator, argument };
-  },
-  LOGICAL_EXPRESSION(operator, left, right) {
-    return { type: astTypes.LOGICAL_EXPRESSION, operator, left, right };
-  },
-  IDENTIFIER(name) {
-    return { type: astTypes.IDENTIFIER, name };
-  },
-  SEQUENCE_EXPRESSION(expressions) {
-    return { type: astTypes.SEQUENCE_EXPRESSION, expressions };
-  },
-  CONDITIONAL_EXPRESSION(test, consequent, alternate) {
-    return { type: astTypes.CONDITIONAL_EXPRESSION, test, consequent, alternate };
-  },
-  MEMBER_EXPRESSION(object, property) {
-    return { type: astTypes.MEMBER_EXPRESSION, object, property };
-  },
-};
-
-compiler.astFactory = astFactory;
 
 function tokenizer(input) {
   let tokens = [];
@@ -333,7 +264,7 @@ compiler.tokenizer = tokenizer;
 
 function parser(inputTokens) {
 
-  return astFactory.PROGRAM(getStatements(inputTokens));
+  return new astFactory.Program(getStatements(inputTokens));
 
   function getGrouping(tokens) {
     let i = 0;
@@ -382,7 +313,7 @@ function parser(inputTokens) {
     }
 
     if (logicalExpressionIndex !== -1) {
-      return astFactory.LOGICAL_EXPRESSION(
+      return new astFactory.LogicalExpression(
         tokens[logicalExpressionIndex].value,
         getExpression(tokens.slice(0, logicalExpressionIndex)),
         getExpression(tokens.slice(logicalExpressionIndex + 1)),
@@ -453,7 +384,7 @@ function parser(inputTokens) {
       return null;
     }
 
-    return astFactory.BINARY_EXPRESSION(
+    return new astFactory.BinaryExpression(
       tokens[operatorIndex].value,
       getExpression(tokens.slice(0, operatorIndex)),
       getExpression(tokens.slice(operatorIndex + 1)),
@@ -471,7 +402,7 @@ function parser(inputTokens) {
       (token.type === tokenTypes.LABEL && token.value === 'void') ||
       (token.type === tokenTypes.BITWISE_OPERATOR && token.value === '~')
     ) {
-      return astFactory.UNARY_EXPRESSION(token.value, getLiteralOrIdentifier(tokens.slice(1)));
+      return new astFactory.UnaryExpression(token.value, getLiteralOrIdentifier(tokens.slice(1)));
     }
     return null;
   }
@@ -496,7 +427,7 @@ function parser(inputTokens) {
     }
     const token = tokens[0];
     if (token.type === tokenTypes.IDENTIFIER) {
-      return astFactory.IDENTIFIER(token.value);
+      return new astFactory.Identifier(token.value);
     }
     throw new Error('Unexpected identifier token type: ' + token.type);
   }
@@ -507,7 +438,7 @@ function parser(inputTokens) {
     }
     const token = tokens[0];
     if (token.type === tokenTypes.NUMBER || token.type === tokenTypes.STRING || token.type === tokenTypes.BOOLEAN || token.type === tokenTypes.NULL) {
-      return astFactory.LITERAL(token.value);
+      return new astFactory.Literal(token.value);
     }
     throw new Error('Unexpected literal token type: ' + token.type);
   }
@@ -525,7 +456,7 @@ function parser(inputTokens) {
       sequenceExpressions.push(getExpression(tokens.slice(prevStart)));
     }
     if (sequenceExpressions.length) {
-      return astFactory.SEQUENCE_EXPRESSION(sequenceExpressions);
+      return new astFactory.SequenceExpression(sequenceExpressions);
     }
     return null;
   }
@@ -547,7 +478,7 @@ function parser(inputTokens) {
     if (questionMarkIndex === -1 || colonIndex === -1) {
       return null;
     }
-    return astFactory.CONDITIONAL_EXPRESSION(getExpression(tokens.slice(0, questionMarkIndex)), getExpression(tokens.slice(questionMarkIndex + 1, colonIndex)), getExpression(tokens.slice(colonIndex + 1)));
+    return new astFactory.ConditionalExpression(getExpression(tokens.slice(0, questionMarkIndex)), getExpression(tokens.slice(questionMarkIndex + 1, colonIndex)), getExpression(tokens.slice(colonIndex + 1)));
   }
 
   function getMemberExpression(tokens) {
@@ -585,10 +516,10 @@ function parser(inputTokens) {
       return null;
     }
 
-    let object = astFactory.IDENTIFIER(access[0].value);
+    let object = new astFactory.Identifier(access[0].value);
 
     for (let j = 1; j < access.length; j++) {
-      object = astFactory.MEMBER_EXPRESSION(object, astFactory.IDENTIFIER(access[j].value));
+      object = new astFactory.MemberExpression(object, new astFactory.Identifier(access[j].value));
     }
     return object;
   }
@@ -638,14 +569,14 @@ function parser(inputTokens) {
     let statements = [];
     for (let i = start; i <= end; i++) {
       if (tokens[i].type === tokenTypes.LABEL && tokens[i].value === ';') {
-        statements.push(astFactory.EXPRESSION_STATEMENT(getGrouping(tokens.slice(start, i)).expression));
+        statements.push(new astFactory.ExpressionStatement(getGrouping(tokens.slice(start, i)).expression));
         start = i + 1;
       }
     }
     if (tokens[end].type === tokenTypes.LABEL && tokens[end].value === ';') {
-      statements.push(astFactory.EXPRESSION_STATEMENT(getGrouping(tokens.slice(start, end)).expression));
+      statements.push(new astFactory.ExpressionStatement(getGrouping(tokens.slice(start, end)).expression));
     } else {
-      statements.push(astFactory.EXPRESSION_STATEMENT(getGrouping(tokens.slice(start, end + 1)).expression));
+      statements.push(new astFactory.ExpressionStatement(getGrouping(tokens.slice(start, end + 1)).expression));
     }
     return statements;
   }
@@ -751,15 +682,20 @@ function execute(ast, scope) {
     return ast.value;
   }
   if (ast.type === astTypes.UNARY_EXPRESSION) {
-    if (ast.operator === '-' ||
-      ast.operator === '+' ||
-      ast.operator === '!' ||
-      ast.operator === '~'
-    ) {
-      return ast.operator + this[ast.argument.type](ast.argument);
+    if (ast.operator === '-') {
+      return -ast.argument.value;
+    }
+    if (ast.operator === '+') {
+      return +ast.argument.value;
+    }
+    if (ast.operator === '!') {
+      return !ast.argument.value;
     }
     if (ast.operator === 'void') {
-      return ast.operator + '(' + this[ast.argument.type](ast.argument) + ')';
+      return undefined;
+    }
+    if (ast.operator === '~') {
+      return ~ast.argument.value;
     }
     throw new Error('Unexpected UNARY_EXPRESSION operator: ' + ast.operator);
   }
