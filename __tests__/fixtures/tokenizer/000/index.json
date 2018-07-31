@@ -1,0 +1,14 @@
+[
+  {
+    "type": "identifier",
+    "value": "userGrade"
+  },
+  {
+    "type": "comparisonOperator",
+    "value": "=="
+  },
+  {
+    "type": "number",
+    "value": 0
+  }
+]

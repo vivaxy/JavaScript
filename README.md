@@ -1,2 +1,3 @@
 # JavaScript
-JavaScript Complier and Executor
+
+JavaScript Compiler and Executor.

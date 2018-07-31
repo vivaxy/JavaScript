@@ -1,0 +1,164 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "BinaryExpression",
+        "operator": "+",
+        "left": {
+          "type": "BinaryExpression",
+          "operator": "+",
+          "left": {
+            "type": "BinaryExpression",
+            "operator": "+",
+            "left": {
+              "type": "BinaryExpression",
+              "operator": "+",
+              "left": {
+                "type": "BinaryExpression",
+                "operator": "+",
+                "left": {
+                  "type": "BinaryExpression",
+                  "operator": "+",
+                  "left": {
+                    "type": "BinaryExpression",
+                    "operator": "+",
+                    "left": {
+                      "type": "BinaryExpression",
+                      "operator": "+",
+                      "left": {
+                        "type": "Literal",
+                        "value": "width:"
+                      },
+                      "right": {
+                        "type": "LogicalExpression",
+                        "operator": "||",
+                        "left": {
+                          "type": "MemberExpression",
+                          "object": {
+                            "type": "MemberExpression",
+                            "object": {
+                              "type": "Identifier",
+                              "name": "starNoteShowMediaInfo"
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "index"
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "width"
+                          }
+                        },
+                        "right": {
+                          "type": "Literal",
+                          "value": "100%"
+                        }
+                      }
+                    },
+                    "right": {
+                      "type": "Literal",
+                      "value": ";height:"
+                    }
+                  },
+                  "right": {
+                    "type": "LogicalExpression",
+                    "operator": "||",
+                    "left": {
+                      "type": "MemberExpression",
+                      "object": {
+                        "type": "MemberExpression",
+                        "object": {
+                          "type": "Identifier",
+                          "name": "starNoteShowMediaInfo"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "index"
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "height"
+                      }
+                    },
+                    "right": {
+                      "type": "Literal",
+                      "value": "100%"
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": ";left:"
+                }
+              },
+              "right": {
+                "type": "LogicalExpression",
+                "operator": "||",
+                "left": {
+                  "type": "MemberExpression",
+                  "object": {
+                    "type": "MemberExpression",
+                    "object": {
+                      "type": "Identifier",
+                      "name": "starNoteShowMediaInfo"
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "index"
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "left"
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": "0"
+                }
+              }
+            },
+            "right": {
+              "type": "Literal",
+              "value": ";top:"
+            }
+          },
+          "right": {
+            "type": "LogicalExpression",
+            "operator": "||",
+            "left": {
+              "type": "MemberExpression",
+              "object": {
+                "type": "MemberExpression",
+                "object": {
+                  "type": "Identifier",
+                  "name": "starNoteShowMediaInfo"
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "index"
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "top"
+              }
+            },
+            "right": {
+              "type": "Literal",
+              "value": "0"
+            }
+          }
+        },
+        "right": {
+          "type": "Literal",
+          "value": ";"
+        }
+      }
+    }
+  ]
+}
