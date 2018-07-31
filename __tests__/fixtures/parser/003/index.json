@@ -37,8 +37,15 @@
                         "left": {
                           "type": "MemberExpression",
                           "object": {
-                            "type": "Identifier",
-                            "name": "starNoteShowMediaInfo[index]"
+                            "type": "MemberExpression",
+                            "object": {
+                              "type": "Identifier",
+                              "name": "starNoteShowMediaInfo"
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "index"
+                            }
                           },
                           "property": {
                             "type": "Identifier",
@@ -62,8 +69,15 @@
                     "left": {
                       "type": "MemberExpression",
                       "object": {
-                        "type": "Identifier",
-                        "name": "starNoteShowMediaInfo[index]"
+                        "type": "MemberExpression",
+                        "object": {
+                          "type": "Identifier",
+                          "name": "starNoteShowMediaInfo"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "index"
+                        }
                       },
                       "property": {
                         "type": "Identifier",
@@ -87,8 +101,15 @@
                 "left": {
                   "type": "MemberExpression",
                   "object": {
-                    "type": "Identifier",
-                    "name": "starNoteShowMediaInfo[index]"
+                    "type": "MemberExpression",
+                    "object": {
+                      "type": "Identifier",
+                      "name": "starNoteShowMediaInfo"
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "index"
+                    }
                   },
                   "property": {
                     "type": "Identifier",
@@ -112,8 +133,15 @@
             "left": {
               "type": "MemberExpression",
               "object": {
-                "type": "Identifier",
-                "name": "starNoteShowMediaInfo[index]"
+                "type": "MemberExpression",
+                "object": {
+                  "type": "Identifier",
+                  "name": "starNoteShowMediaInfo"
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "index"
+                }
               },
               "property": {
                 "type": "Identifier",

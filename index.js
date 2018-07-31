@@ -486,42 +486,30 @@ function parser(inputTokens) {
       return null;
     }
 
-    if (tokens[0].type !== tokenTypes.IDENTIFIER || tokens[tokens.length - 1].type !== tokenTypes.IDENTIFIER) {
-      return null;
+    if (
+      tokens[tokens.length - 1].type === tokenTypes.IDENTIFIER &&
+      tokens[tokens.length - 2].type === tokenTypes.LABEL &&
+      tokens[tokens.length - 2].value === '.'
+    ) {
+      return new astFactory.MemberExpression(getExpression(tokens.slice(0, -2)), getExpression(tokens.slice(-1)));
     }
 
-    // * ... + (identifier || literal) + label(.) + identify
-    // * ... + (identifier || literal) + label([) + (identify || literal) + label(])
-    let expecting = tokenTypes.IDENTIFIER;
-    let access = [];
-    let i = 0;
-    while (
-      i < tokens.length && (
-        (tokens[i].type === expecting && expecting === tokenTypes.LABEL && tokens[i].value === '.')
-        || (tokens[i].type === expecting && expecting === tokenTypes.IDENTIFIER)
-      )
-      ) {
-      if (tokens[i].type === tokenTypes.IDENTIFIER) {
-        access.push(tokens[i]);
+    if (tokens[tokens.length - 1].type === tokenTypes.LABEL && tokens[tokens.length - 1].value === ']') {
+      // get [ index
+      let startBracketIndex = -1;
+      for (let i = tokens.length - 1; i >= 0; i--) {
+        if (tokens[i].type === tokenTypes.LABEL && tokens[i].value === '[') {
+          startBracketIndex = i;
+          break;
+        }
       }
-      i++;
-      if (expecting === tokenTypes.LABEL) {
-        expecting = tokenTypes.IDENTIFIER;
-      } else {
-        expecting = tokenTypes.LABEL;
+      if (startBracketIndex === -1) {
+        throw new Error('Expect [');
       }
+      return new astFactory.MemberExpression(getExpression(tokens.slice(0, startBracketIndex)), getExpression(tokens.slice(startBracketIndex + 1, tokens.length - 1)));
     }
 
-    if (expecting === tokenTypes.IDENTIFIER && i !== tokens.length - 1) {
-      return null;
-    }
-
-    let object = new astFactory.Identifier(access[0].value);
-
-    for (let j = 1; j < access.length; j++) {
-      object = new astFactory.MemberExpression(object, new astFactory.Identifier(access[j].value));
-    }
-    return object;
+    return null;
   }
 
   function getExpression(tokens) {
