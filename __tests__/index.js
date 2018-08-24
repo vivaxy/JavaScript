@@ -63,8 +63,8 @@ test.only('execute', async (t) => {
     cwd: baseDir,
     onlyDirectories: true,
   })).filter((x) => {
-    // return true;
-    return x === '033';
+    return true;
+    return x === '035';
   });
 
   const tested = [];
