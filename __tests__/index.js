@@ -12,9 +12,15 @@ const parse = require('../lib/parse.js');
 const execute = require('../lib/execute.js');
 const stringify = require('../lib/stringify.js');
 
-test('parse', async (t) => {
+test.only('parse', async (t) => {
   const baseDir = path.join(__dirname, 'fixtures', 'parse');
-  const testCases = await glob('*', { cwd: baseDir, onlyDirectories: true });
+  const testCases = (await glob('*', {
+    cwd: baseDir,
+    onlyDirectories: true,
+  })).filter((x) => {
+    return true;
+    return x === '003';
+  });
 
   const tested = [];
   for (let i = 0; i < testCases.length; i++) {
@@ -46,7 +52,7 @@ test('parse', async (t) => {
 
 test('execute', async (t) => {
   const baseDir = path.join(__dirname, 'fixtures', 'execute');
-  const testCases = await glob('*', { cwd: baseDir });
+  const testCases = await glob('*', { cwd: baseDir, onlyDirectories: true });
 
   const tested = [];
   for (let i = 0; i < testCases.length; i++) {
@@ -86,7 +92,7 @@ test('execute', async (t) => {
 
 test('stringify', async (t) => {
   const baseDir = path.join(__dirname, 'fixtures', 'stringify');
-  const testCases = await glob('*', { cwd: baseDir });
+  const testCases = await glob('*', { cwd: baseDir, onlyDirectories: true });
 
   const tested = [];
   for (let i = 0; i < testCases.length; i++) {
