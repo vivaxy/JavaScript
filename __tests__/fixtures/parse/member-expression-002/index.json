@@ -17,8 +17,8 @@
             "name": "item"
           },
           "property": {
-            "type": "Identifier",
-            "name": "noteId"
+            "type": "Literal",
+            "value": "noteId"
           }
         }
       }
