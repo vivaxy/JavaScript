@@ -3,13 +3,11 @@
  * @author vivaxy
  */
 
-const tokenize = require('./lib/tokenize.js');
 const parse = require('./lib/parse.js');
 const execute = require('./lib/execute.js');
 
 function compiler(input, scope) {
-  const tokens = tokenize(input);
-  const ast = parse(tokens);
+  const ast = parse(input);
   return execute(ast, scope);
 }
 

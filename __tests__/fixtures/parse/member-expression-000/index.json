@@ -17,8 +17,16 @@
             "name": "item"
           },
           "property": {
-            "type": "Literal",
-            "value": "noteId"
+            "type": "BinaryExpression",
+            "operator": "+",
+            "left": {
+              "type": "Literal",
+              "value": "note"
+            },
+            "right": {
+              "type": "Literal",
+              "value": "Id"
+            }
           }
         }
       }
