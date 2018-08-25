@@ -5,10 +5,10 @@
 
 const parse = require('./lib/parse.js');
 const execute = require('./lib/execute.js');
+const serialize = require('./lib/serialize.js');
+const traverse = require('./lib/traverse.js');
 
-function compiler(input, scope) {
-  const ast = parse(input);
-  return execute(ast, scope);
-}
-
-module.exports = compiler;
+exports.parse = parse;
+exports.execute = execute;
+exports.serialize = serialize;
+exports.traverse = traverse;

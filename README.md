@@ -1,6 +1,6 @@
 # JavaScript
 
-JavaScript Compiler and Executor.
+JavaScript parser, executor and serializer.
 
 [![Build Status][travis-image]][travis-url]
 [![NPM Version][npm-version-image]][npm-url]
