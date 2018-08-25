@@ -10,8 +10,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **build:** :sparkles:Add prettier, traivs, code coverage ([8553499](https://github.com/vivaxy/JavaScript/commit/8553499))
 * **MemberExpression:** :sparkles:Support [] member access ([d1a2dea](https://github.com/vivaxy/JavaScript/commit/d1a2dea))
-* **parse:** :sparkles: ([fd7d136](https://github.com/vivaxy/JavaScript/commit/fd7d136))
-* **parse:** :sparkles: ([df11e3c](https://github.com/vivaxy/JavaScript/commit/df11e3c))
+* **parse:** :sparkles:Refactor parse.js ([fd7d136](https://github.com/vivaxy/JavaScript/commit/fd7d136))
 
 
 
