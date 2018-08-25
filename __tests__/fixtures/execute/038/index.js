@@ -1,1 +1,1 @@
-{{userGrade}} >= 1 && {{userName}} === 'test'
+userGrade >= 1 && userName === 'test'

@@ -18,8 +18,8 @@ test('parse', async (t) => {
     cwd: baseDir,
     onlyDirectories: true,
   })).filter((x) => {
-    // return true;
-    return x === 'unary-expression-000';
+    return true;
+    return x === 'number-000';
   });
 
   const tested = [];
@@ -57,14 +57,14 @@ test('parse', async (t) => {
   }
 });
 
-test.only('execute', async (t) => {
+test('execute', async (t) => {
   const baseDir = path.join(__dirname, 'fixtures', 'execute');
   const testCases = (await glob('*', {
     cwd: baseDir,
     onlyDirectories: true,
   })).filter((x) => {
     return true;
-    return x === '035';
+    return x === '044';
   });
 
   const tested = [];

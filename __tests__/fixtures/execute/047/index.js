@@ -1,1 +1,1 @@
-{{userGrade}} >= 1
+userGrade >= 1
