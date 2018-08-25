@@ -14,6 +14,7 @@ const astTypes = {
   SEQUENCE_EXPRESSION: 'SequenceExpression',
   CONDITIONAL_EXPRESSION: 'ConditionalExpression',
   MEMBER_EXPRESSION: 'MemberExpression',
+  UPDATE_EXPRESSION: 'UpdateExpression',
 };
 
 exports.astTypes = astTypes;
@@ -116,5 +117,14 @@ exports.MemberExpression = class MemberExpression extends ASTNode {
     super(astTypes.MEMBER_EXPRESSION, location);
     this.object = object;
     this.property = property;
+  }
+};
+
+exports.UpdateExpression = class UpdateExpression extends ASTNode {
+  constructor(operator, argument, prefix, location) {
+    super(astTypes.UPDATE_EXPRESSION, location);
+    this.operator = operator;
+    this.argument = argument;
+    this.prefix = prefix;
   }
 };
