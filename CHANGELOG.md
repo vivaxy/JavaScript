@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/vivaxy/JavaScript/compare/v0.5.2...v0.6.0) (2018-08-25)
+
+
+### Features
+
+* **build:** :sparkles:Add prettier, traivs, code coverage ([8553499](https://github.com/vivaxy/JavaScript/commit/8553499))
+* **MemberExpression:** :sparkles:Support [] member access ([d1a2dea](https://github.com/vivaxy/JavaScript/commit/d1a2dea))
+* **parse:** :sparkles: ([fd7d136](https://github.com/vivaxy/JavaScript/commit/fd7d136))
+* **parse:** :sparkles: ([df11e3c](https://github.com/vivaxy/JavaScript/commit/df11e3c))
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/vivaxy/JavaScript/compare/v0.5.1...v0.5.2) (2018-07-27)
 
