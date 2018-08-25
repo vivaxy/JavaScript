@@ -8,9 +8,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **build:** :sparkles:Add prettier, traivs, code coverage ([8553499](https://github.com/vivaxy/JavaScript/commit/8553499))
+* **Build:** :sparkles:Add prettier, traivs, code coverage ([8553499](https://github.com/vivaxy/JavaScript/commit/8553499))
 * **MemberExpression:** :sparkles:Support [] member access ([d1a2dea](https://github.com/vivaxy/JavaScript/commit/d1a2dea))
-* **parse:** :sparkles:Refactor parse.js ([fd7d136](https://github.com/vivaxy/JavaScript/commit/fd7d136))
+* **Parse:** :sparkles:Refactor parse.js ([fd7d136](https://github.com/vivaxy/JavaScript/commit/fd7d136))
 
 
 
@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **identifier:** :bug:Fix trailing space of identifiers ([0b18623](https://github.com/vivaxy/JavaScript/commit/0b18623))
+* **Identifier:** :bug:Fix trailing space of identifiers ([0b18623](https://github.com/vivaxy/JavaScript/commit/0b18623))
 
 
 
@@ -30,7 +30,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **stringify:** :bug:Fix IDENTIFIER name ([1093a70](https://github.com/vivaxy/JavaScript/commit/1093a70))
+* **Stringify:** :bug:Fix IDENTIFIER name ([1093a70](https://github.com/vivaxy/JavaScript/commit/1093a70))
 
 
 
@@ -40,7 +40,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **stringify:** :sparkles:Simple stringify ([f309230](https://github.com/vivaxy/JavaScript/commit/f309230))
+* **Stringify:** :sparkles:Simple stringify ([f309230](https://github.com/vivaxy/JavaScript/commit/f309230))
 
 
 
@@ -50,7 +50,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **LOGICAL_EXPRESSION:** :sparkles:Support LOGICAL_EXPRESSION in BINARY_EXPRESSION ([7dadba7](https://github.com/vivaxy/JavaScript/commit/7dadba7))
+* **LogicalExpression:** :sparkles:Support LOGICAL_EXPRESSION in BINARY_EXPRESSION ([7dadba7](https://github.com/vivaxy/JavaScript/commit/7dadba7))
 
 
 
@@ -60,7 +60,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **parenthesis:** :sparkles:Beter supports parenthesis ([476c141](https://github.com/vivaxy/JavaScript/commit/476c141))
+* **Parenthesis:** :sparkles:Beter supports parenthesis ([476c141](https://github.com/vivaxy/JavaScript/commit/476c141))
 
 
 
@@ -70,7 +70,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **Support scoped identifier:** :sparkles:Remove argument token type, use identifier instead. Injec ([1baa51b](https://github.com/vivaxy/JavaScript/commit/1baa51b))
+* **Identifier:** :sparkles:Remove argument token type, use identifier instead. Injec ([1baa51b](https://github.com/vivaxy/JavaScript/commit/1baa51b))
 
 
 
