@@ -10,7 +10,7 @@ const glob = require('fast-glob');
 
 const parse = require('../lib/parse.js');
 const execute = require('../lib/execute.js');
-const stringify = require('../lib/stringify.js');
+const serialize = require('../lib/serialize.js');
 
 test('parse', async (t) => {
   const baseDir = path.join(__dirname, 'fixtures', 'parse');
@@ -105,8 +105,8 @@ test('execute', async (t) => {
   }
 });
 
-test('stringify', async (t) => {
-  const baseDir = path.join(__dirname, 'fixtures', 'stringify');
+test('serialize', async (t) => {
+  const baseDir = path.join(__dirname, 'fixtures', 'serialize');
   const testCases = await glob('*', { cwd: baseDir, onlyDirectories: true });
 
   const tested = [];
@@ -132,7 +132,7 @@ test('stringify', async (t) => {
 
     let ans = null;
     try {
-      ans = stringify(parse(input));
+      ans = serialize(parse(input));
     } catch (e) {
       t.fail('Test case error: ' + testCases[i] + '\n error: ' + e.stack);
       throw new Error(e);
