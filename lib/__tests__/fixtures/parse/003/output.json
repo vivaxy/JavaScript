@@ -57,7 +57,8 @@
                         "right": {
                           "type": "Literal",
                           "value": "100%"
-                        }
+                        },
+                        "paren": true
                       }
                     },
                     "right": {
@@ -91,7 +92,8 @@
                     "right": {
                       "type": "Literal",
                       "value": "100%"
-                    }
+                    },
+                    "paren": true
                   }
                 },
                 "right": {
@@ -125,7 +127,8 @@
                 "right": {
                   "type": "Literal",
                   "value": "0"
-                }
+                },
+                "paren": true
               }
             },
             "right": {
@@ -159,7 +162,8 @@
             "right": {
               "type": "Literal",
               "value": "0"
-            }
+            },
+            "paren": true
           }
         },
         "right": {

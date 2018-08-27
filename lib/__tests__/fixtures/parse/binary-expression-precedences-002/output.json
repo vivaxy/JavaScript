@@ -1,0 +1,28 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "LogicalExpression",
+        "operator": "&&",
+        "left": {
+          "type": "Identifier",
+          "name": "a"
+        },
+        "right": {
+          "type": "BinaryExpression",
+          "operator": "**",
+          "left": {
+            "type": "Identifier",
+            "name": "b"
+          },
+          "right": {
+            "type": "Identifier",
+            "name": "c"
+          }
+        }
+      }
+    }
+  ]
+}

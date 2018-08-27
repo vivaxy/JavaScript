@@ -1,0 +1,21 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "UnaryExpression",
+        "operator": "!",
+        "argument": {
+          "type": "UpdateExpression",
+          "operator": "++",
+          "argument": {
+            "type": "Identifier",
+            "name": "a"
+          },
+          "prefix": false
+        }
+      }
+    }
+  ]
+}

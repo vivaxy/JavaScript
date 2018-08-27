@@ -8,7 +8,7 @@ const astTypes = {
   EXPRESSION_STATEMENT: 'ExpressionStatement',
   LITERAL: 'Literal',
   BINARY_EXPRESSION: 'BinaryExpression',
-  UNARY_EXPRESSION: 'UnaryExpression', // void + - !
+  UNARY_EXPRESSION: 'UnaryExpression',
   LOGICAL_EXPRESSION: 'LogicalExpression',
   IDENTIFIER: 'Identifier',
   SEQUENCE_EXPRESSION: 'SequenceExpression',
@@ -72,6 +72,14 @@ exports.BinaryExpression = class BinaryExpression extends ASTNode {
   }
 };
 
+/**
+ * void
+ * +
+ * -
+ * !
+ * ~
+ * @type {UnaryExpression}
+ */
 exports.UnaryExpression = class UnaryExpression extends ASTNode {
   constructor(operator, argument, location) {
     super(astTypes.UNARY_EXPRESSION, location);

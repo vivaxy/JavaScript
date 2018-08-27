@@ -33,13 +33,15 @@
                 "right": {
                   "type": "Literal",
                   "value": 3
-                }
+                },
+                "paren": true
               }
             },
             "right": {
               "type": "Literal",
               "value": 2
-            }
+            },
+            "paren": true
           }
         },
         "right": {
