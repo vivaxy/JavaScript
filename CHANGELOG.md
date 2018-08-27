@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.1"></a>
+## [0.7.1](https://github.com/vivaxy/JavaScript/compare/v0.7.0...v0.7.1) (2018-08-27)
+
+
+### Bug Fixes
+
+* **binary operator precedences:** :bug: ([9939d0a](https://github.com/vivaxy/JavaScript/commit/9939d0a))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/vivaxy/JavaScript/compare/v0.6.1...v0.7.0) (2018-08-27)
 
