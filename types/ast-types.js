@@ -80,6 +80,11 @@ exports.UnaryExpression = class UnaryExpression extends ASTNode {
   }
 };
 
+/**
+ * &&
+ * ||
+ * @type {LogicalExpression}
+ */
 exports.LogicalExpression = class LogicalExpression extends ASTNode {
   constructor(operator, left, right, location) {
     super(astTypes.LOGICAL_EXPRESSION, location);
@@ -113,10 +118,11 @@ exports.ConditionalExpression = class ConditionalExpression extends ASTNode {
 };
 
 exports.MemberExpression = class MemberExpression extends ASTNode {
-  constructor(object, property, location) {
+  constructor(object, property, computed, location) {
     super(astTypes.MEMBER_EXPRESSION, location);
     this.object = object;
     this.property = property;
+    this.computed = computed;
   }
 };
 
@@ -127,4 +133,82 @@ exports.UpdateExpression = class UpdateExpression extends ASTNode {
     this.argument = argument;
     this.prefix = prefix;
   }
+};
+
+exports.isBinaryExpressionOperator = function isBinaryExpressionOperator(
+  operator
+) {
+  return (
+    operator === '**' ||
+    operator === '*' ||
+    operator === '/' ||
+    operator === '%' ||
+    operator === '+' ||
+    operator === '-' ||
+    operator === '<<' ||
+    operator === '>>' ||
+    operator === '>>>' ||
+    operator === '<' ||
+    operator === '<=' ||
+    operator === '>' ||
+    operator === '>=' ||
+    operator === '==' ||
+    operator === '!=' ||
+    operator === '===' ||
+    operator === '!==' ||
+    operator === '&' ||
+    operator === '^' ||
+    operator === '|'
+  );
+};
+
+exports.isLogicalExpressionOperator = function isLogicalExpressionOperator(
+  operator
+) {
+  return operator === '&&' || operator === '||';
+};
+
+exports.isUnaryExpressionOperator = function isUnaryExpressionOperator(
+  operator
+) {
+  return (
+    operator === 'void' ||
+    operator === '!' ||
+    operator === '+' ||
+    operator === '-' ||
+    operator === '~'
+  );
+};
+
+exports.isUpdateExpressionOperator = function isUpdateExpressionOperator(
+  operator
+) {
+  return operator === '++' || operator === '--';
+};
+
+exports.binaryOperatorPrecedences = {
+  '**': 15,
+  '*': 14,
+  '/': 14,
+  '%': 14,
+  '+': 13,
+  '-': 13,
+  '<<': 12,
+  '>>': 12,
+  '>>>': 12,
+  '<': 11,
+  '<=': 11,
+  '>': 11,
+  '>=': 11,
+  in: 11,
+  instanceof: 11,
+  '==': 10,
+  '!=': 10,
+  '===': 10,
+  '!==': 10,
+  '&': 9,
+  '^': 8,
+  '|': 7,
+  '&&': 6,
+  '||': 5,
 };

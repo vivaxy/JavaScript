@@ -1,0 +1,36 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "BinaryExpression",
+        "operator": "+",
+        "left": {
+          "type": "Literal",
+          "value": "note-"
+        },
+        "right": {
+          "type": "MemberExpression",
+          "object": {
+            "type": "Identifier",
+            "name": "item"
+          },
+          "property": {
+            "type": "BinaryExpression",
+            "operator": "+",
+            "left": {
+              "type": "Literal",
+              "value": "note"
+            },
+            "right": {
+              "type": "Literal",
+              "value": "Id"
+            }
+          },
+          "computed": true
+        }
+      }
+    }
+  ]
+}

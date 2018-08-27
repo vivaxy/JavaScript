@@ -7,8 +7,10 @@ const parse = require('./lib/parse.js');
 const execute = require('./lib/execute.js');
 const serialize = require('./lib/serialize.js');
 const traverse = require('./lib/traverse.js');
+const astTypes = require('./types/ast-types.js');
 
 exports.parse = parse;
 exports.execute = execute;
 exports.serialize = serialize;
 exports.traverse = traverse;
+exports.astTypes = astTypes;

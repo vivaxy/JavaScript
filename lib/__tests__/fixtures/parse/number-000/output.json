@@ -1,0 +1,28 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "BinaryExpression",
+        "operator": "+",
+        "left": {
+          "type": "Literal",
+          "value": 0.1
+        },
+        "right": {
+          "type": "MemberExpression",
+          "object": {
+            "type": "Literal",
+            "value": 0.1
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "length"
+          },
+          "computed": false
+        }
+      }
+    }
+  ]
+}
