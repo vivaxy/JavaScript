@@ -1,6 +1,6 @@
 {
   "name": "@vivaxy/javascript",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "JavaScript Complier and Executor",
   "main": "index.js",
   "scripts": {
