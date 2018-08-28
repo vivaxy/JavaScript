@@ -1,0 +1,47 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "ConditionalExpression",
+        "test": {
+          "type": "Identifier",
+          "name": "url"
+        },
+        "consequent": {
+          "type": "BinaryExpression",
+          "operator": "+",
+          "left": {
+            "type": "BinaryExpression",
+            "operator": "+",
+            "left": {
+              "type": "BinaryExpression",
+              "operator": "+",
+              "left": {
+                "type": "Literal",
+                "value": "background-image:url("
+              },
+              "right": {
+                "type": "Identifier",
+                "name": "protocol"
+              }
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "url"
+            }
+          },
+          "right": {
+            "type": "Literal",
+            "value": ");"
+          }
+        },
+        "alternate": {
+          "type": "Literal",
+          "value": ""
+        }
+      }
+    }
+  ]
+}

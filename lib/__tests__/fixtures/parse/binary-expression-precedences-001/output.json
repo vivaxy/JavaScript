@@ -2,88 +2,91 @@
   "type": "Program",
   "body": [
     {
-      "type": "ConditionalExpression",
-      "test": {
-        "type": "LogicalExpression",
-        "operator": "||",
-        "left": {
-          "type": "Identifier",
-          "name": "a"
-        },
-        "right": {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "ConditionalExpression",
+        "test": {
           "type": "LogicalExpression",
-          "operator": "&&",
+          "operator": "||",
           "left": {
             "type": "Identifier",
-            "name": "d"
+            "name": "a"
           },
           "right": {
-            "type": "BinaryExpression",
-            "operator": "^",
+            "type": "LogicalExpression",
+            "operator": "&&",
             "left": {
               "type": "Identifier",
-              "name": "e"
+              "name": "d"
             },
             "right": {
               "type": "BinaryExpression",
-              "operator": "&",
+              "operator": "^",
               "left": {
                 "type": "Identifier",
-                "name": "f"
+                "name": "e"
               },
               "right": {
                 "type": "BinaryExpression",
-                "operator": "===",
+                "operator": "&",
                 "left": {
                   "type": "Identifier",
-                  "name": "g"
+                  "name": "f"
                 },
                 "right": {
                   "type": "BinaryExpression",
-                  "operator": "<",
+                  "operator": "===",
                   "left": {
                     "type": "Identifier",
-                    "name": "h"
+                    "name": "g"
                   },
                   "right": {
                     "type": "BinaryExpression",
-                    "operator": "<<",
+                    "operator": "<",
                     "left": {
                       "type": "Identifier",
-                      "name": "i"
+                      "name": "h"
                     },
                     "right": {
                       "type": "BinaryExpression",
-                      "operator": "+",
+                      "operator": "<<",
                       "left": {
                         "type": "Identifier",
-                        "name": "j"
+                        "name": "i"
                       },
                       "right": {
                         "type": "BinaryExpression",
-                        "operator": "%",
+                        "operator": "+",
                         "left": {
                           "type": "Identifier",
-                          "name": "k"
+                          "name": "j"
                         },
                         "right": {
                           "type": "BinaryExpression",
-                          "operator": "**",
+                          "operator": "%",
                           "left": {
                             "type": "Identifier",
-                            "name": "l"
+                            "name": "k"
                           },
                           "right": {
-                            "type": "UnaryExpression",
-                            "operator": "!",
-                            "argument": {
-                              "type": "UpdateExpression",
-                              "operator": "++",
+                            "type": "BinaryExpression",
+                            "operator": "**",
+                            "left": {
+                              "type": "Identifier",
+                              "name": "l"
+                            },
+                            "right": {
+                              "type": "UnaryExpression",
+                              "operator": "!",
                               "argument": {
-                                "type": "Identifier",
-                                "name": "m"
-                              },
-                              "prefix": false
+                                "type": "UpdateExpression",
+                                "operator": "++",
+                                "argument": {
+                                  "type": "Identifier",
+                                  "name": "m"
+                                },
+                                "prefix": false
+                              }
                             }
                           }
                         }
@@ -94,15 +97,15 @@
               }
             }
           }
+        },
+        "consequent": {
+          "type": "Identifier",
+          "name": "b"
+        },
+        "alternate": {
+          "type": "Identifier",
+          "name": "c"
         }
-      },
-      "consequent": {
-        "type": "Identifier",
-        "name": "b"
-      },
-      "alternate": {
-        "type": "Identifier",
-        "name": "c"
       }
     }
   ]
