@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.4"></a>
+## [0.7.4](https://github.com/vivaxy/JavaScript/compare/v0.7.3...v0.7.4) (2018-08-28)
+
+
+### Bug Fixes
+
+* **MemberExpression:** :bug:Fix MemberExpression with UnaryExpression ([2627aaa](https://github.com/vivaxy/JavaScript/commit/2627aaa))
+
+
+
 <a name="0.7.3"></a>
 ## [0.7.3](https://github.com/vivaxy/JavaScript/compare/v0.7.2...v0.7.3) (2018-08-28)
 
