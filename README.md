@@ -20,3 +20,10 @@ JavaScript parser, executor and serializer.
 [standard-version-url]: https://github.com/conventional-changelog/standard-version
 [codecov-image]: https://img.shields.io/codecov/c/github/vivaxy/JavaScript.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/vivaxy/JavaScript
+
+## Benchmark
+
+@vivaxy/javascript#parse x 3,908 ops/sec ±1.64% (90 runs sampled)
+@babel/parser#parse x 1,967 ops/sec ±3.13% (86 runs sampled)
+acorn#parse x 1,200 ops/sec ±7.21% (88 runs sampled)
+Fastest is @vivaxy/javascript#parse
