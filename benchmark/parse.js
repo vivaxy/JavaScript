@@ -62,7 +62,7 @@ const suite = new Benchmark.Suite();
       });
     })
     .on('cycle', function(event) {
-      message += String(event.target) + '\n';
+      message += String(event.target) + '\n\n';
     })
     .on('complete', async function() {
       message += 'Fastest is ' + this.filter('fastest').map('name');

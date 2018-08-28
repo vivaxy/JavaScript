@@ -7,7 +7,8 @@
     "test": "nyc ava && nyc report --reporter=html && nyc report --reporter=lcov > coverage.lcov",
     "release:beta": "npm test && standard-version --prerelease beta && npm publish --tag beta && git push --follow-tags",
     "release": "npm test && standard-version && npm publish && git push --follow-tags",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "benchmark": "node ./benchmark/parse.js"
   },
   "repository": {
     "type": "git",
