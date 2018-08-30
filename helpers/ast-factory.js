@@ -1,23 +1,9 @@
 /**
- * @since 20180730 14:52
+ * @since 20180830 16:08
  * @author vivaxy
  */
 
-const astTypes = {
-  PROGRAM: 'Program',
-  EXPRESSION_STATEMENT: 'ExpressionStatement',
-  LITERAL: 'Literal',
-  BINARY_EXPRESSION: 'BinaryExpression',
-  UNARY_EXPRESSION: 'UnaryExpression',
-  LOGICAL_EXPRESSION: 'LogicalExpression',
-  IDENTIFIER: 'Identifier',
-  SEQUENCE_EXPRESSION: 'SequenceExpression',
-  CONDITIONAL_EXPRESSION: 'ConditionalExpression',
-  MEMBER_EXPRESSION: 'MemberExpression',
-  UPDATE_EXPRESSION: 'UpdateExpression',
-};
-
-exports.astTypes = astTypes;
+const astTypes = require('./ast-types.js');
 
 exports.Position = class Position {
   constructor(line, column) {
@@ -192,31 +178,4 @@ exports.isUpdateExpressionOperator = function isUpdateExpressionOperator(
   operator
 ) {
   return operator === '++' || operator === '--';
-};
-
-exports.binaryOperatorPrecedences = {
-  '**': 15,
-  '*': 14,
-  '/': 14,
-  '%': 14,
-  '+': 13,
-  '-': 13,
-  '<<': 12,
-  '>>': 12,
-  '>>>': 12,
-  '<': 11,
-  '<=': 11,
-  '>': 11,
-  '>=': 11,
-  in: 11,
-  instanceof: 11,
-  '==': 10,
-  '!=': 10,
-  '===': 10,
-  '!==': 10,
-  '&': 9,
-  '^': 8,
-  '|': 7,
-  '&&': 6,
-  '||': 5,
 };
