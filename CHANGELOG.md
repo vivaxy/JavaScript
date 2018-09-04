@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/vivaxy/JavaScript/compare/v0.9.0...v0.10.0) (2018-09-04)
+
+
+### Features
+
+* **traverse.js:** :sparkles:Add parent node to visitor function ([138b0c9](https://github.com/vivaxy/JavaScript/commit/138b0c9))
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/vivaxy/JavaScript/compare/v0.8.0...v0.9.0) (2018-08-31)
 
