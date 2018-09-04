@@ -154,6 +154,23 @@ exports.ArrayExpression = class ArrayExpression extends ASTNode {
   }
 };
 
+exports.CallExpression = class CallExpression extends ASTNode {
+  constructor(callee, _arguments, location) {
+    super(astTypes.CALL_EXPRESSION, location);
+    this.callee = callee;
+    this.arguments = _arguments;
+  }
+};
+
+exports.AssignmentExpression = class AssignmentExpression extends ASTNode {
+  constructor(operator, left, right, location) {
+    super(astTypes.ASSIGNMENT_EXPRESSION, location);
+    this.operator = operator;
+    this.left = left;
+    this.right = right;
+  }
+};
+
 exports.isBinaryExpressionOperator = function isBinaryExpressionOperator(
   operator
 ) {

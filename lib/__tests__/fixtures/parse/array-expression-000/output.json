@@ -1,0 +1,29 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "ArrayExpression",
+        "elements": [
+          {
+            "type": "Literal",
+            "value": 1
+          },
+          {
+            "type": "Literal",
+            "value": "true"
+          },
+          {
+            "type": "Literal",
+            "value": true
+          },
+          {
+            "type": "Identifier",
+            "name": "t"
+          }
+        ]
+      }
+    }
+  ]
+}
