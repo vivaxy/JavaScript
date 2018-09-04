@@ -129,6 +129,31 @@ exports.UpdateExpression = class UpdateExpression extends ASTNode {
   }
 };
 
+exports.ObjectExpression = class ObjectExpression extends ASTNode {
+  constructor(properties, location) {
+    super(astTypes.OBJECT_EXPRESSION, location);
+    this.properties = properties;
+  }
+};
+
+exports.Property = class Property extends ASTNode {
+  constructor(key, value, method, shorthand, computed, location) {
+    super(astTypes.PROPERTY, location);
+    this.key = key;
+    this.value = value;
+    this.method = method;
+    this.shorthand = shorthand;
+    this.computed = computed;
+  }
+};
+
+exports.ArrayExpression = class ArrayExpression extends ASTNode {
+  constructor(elements, location) {
+    super(astTypes.ARRAY_EXPRESSION, location);
+    this.elements = elements;
+  }
+};
+
 exports.isBinaryExpressionOperator = function isBinaryExpressionOperator(
   operator
 ) {

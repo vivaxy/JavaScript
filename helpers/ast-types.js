@@ -15,6 +15,9 @@ const astTypes = {
   CONDITIONAL_EXPRESSION: 'ConditionalExpression',
   MEMBER_EXPRESSION: 'MemberExpression',
   UPDATE_EXPRESSION: 'UpdateExpression',
+  OBJECT_EXPRESSION: 'ObjectExpression',
+  PROPERTY: 'Property',
+  ARRAY_EXPRESSION: 'ArrayExpression',
 };
 
 module.exports = astTypes;
