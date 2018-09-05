@@ -1,0 +1,30 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "BinaryExpression",
+        "operator": "*",
+        "left": {
+          "type": "BinaryExpression",
+          "operator": "+",
+          "left": {
+            "type": "Literal",
+            "value": 1
+          },
+          "right": {
+            "type": "Literal",
+            "value": 1
+          },
+          "paren": true
+        },
+        "right": {
+          "type": "Literal",
+          "value": 2,
+          "paren": true
+        }
+      }
+    }
+  ]
+}

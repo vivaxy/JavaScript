@@ -1,0 +1,36 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "LogicalExpression",
+        "operator": "&&",
+        "left": {
+          "type": "BinaryExpression",
+          "operator": ">=",
+          "left": {
+            "type": "Identifier",
+            "name": "userGrade"
+          },
+          "right": {
+            "type": "Literal",
+            "value": 1
+          }
+        },
+        "right": {
+          "type": "BinaryExpression",
+          "operator": "===",
+          "left": {
+            "type": "Identifier",
+            "name": "userName"
+          },
+          "right": {
+            "type": "Literal",
+            "value": "test"
+          }
+        }
+      }
+    }
+  ]
+}

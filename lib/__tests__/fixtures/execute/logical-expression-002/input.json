@@ -1,0 +1,29 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "LogicalExpression",
+        "operator": "||",
+        "left": {
+          "type": "Literal",
+          "value": true
+        },
+        "right": {
+          "type": "LogicalExpression",
+          "operator": "&&",
+          "left": {
+            "type": "Literal",
+            "value": true
+          },
+          "right": {
+            "type": "Literal",
+            "value": false
+          },
+          "paren": true
+        }
+      }
+    }
+  ]
+}

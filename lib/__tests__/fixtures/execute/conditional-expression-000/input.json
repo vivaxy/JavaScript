@@ -1,0 +1,31 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "ConditionalExpression",
+        "test": {
+          "type": "BinaryExpression",
+          "operator": "===",
+          "left": {
+            "type": "Literal",
+            "value": 1
+          },
+          "right": {
+            "type": "Literal",
+            "value": 1
+          }
+        },
+        "consequent": {
+          "type": "Literal",
+          "value": 2
+        },
+        "alternate": {
+          "type": "Literal",
+          "value": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "UnaryExpression",
+        "operator": "void",
+        "argument": {
+          "type": "Literal",
+          "value": 0,
+          "paren": true
+        }
+      }
+    }
+  ]
+}
