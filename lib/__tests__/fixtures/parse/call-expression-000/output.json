@@ -1,3 +1,59 @@
 {
-  
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "BinaryExpression",
+        "operator": "!==",
+        "left": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "MemberExpression",
+            "object": {
+              "type": "ArrayExpression",
+              "elements": [
+                {
+                  "type": "Literal",
+                  "value": "404"
+                },
+                {
+                  "type": "Literal",
+                  "value": "empty"
+                },
+                {
+                  "type": "Literal",
+                  "value": "feeds"
+                },
+                {
+                  "type": "Literal",
+                  "value": "general"
+                }
+              ]
+            },
+            "property": {
+              "type": "Identifier",
+              "name": "indexOf"
+            },
+            "computed": false
+          },
+          "arguments": [
+            {
+              "type": "Identifier",
+              "name": "icon",
+              "paren": true
+            }
+          ]
+        },
+        "right": {
+          "type": "UnaryExpression",
+          "operator": "-",
+          "argument": {
+            "type": "Literal",
+            "value": 1
+          }
+        }
+      }
+    }
+  ]
 }
