@@ -1,0 +1,112 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "ConditionalExpression",
+        "test": {
+          "type": "LogicalExpression",
+          "operator": "||",
+          "left": {
+            "type": "Identifier",
+            "name": "a"
+          },
+          "right": {
+            "type": "LogicalExpression",
+            "operator": "&&",
+            "left": {
+              "type": "Identifier",
+              "name": "d"
+            },
+            "right": {
+              "type": "BinaryExpression",
+              "operator": "^",
+              "left": {
+                "type": "Identifier",
+                "name": "e"
+              },
+              "right": {
+                "type": "BinaryExpression",
+                "operator": "&",
+                "left": {
+                  "type": "Identifier",
+                  "name": "f"
+                },
+                "right": {
+                  "type": "BinaryExpression",
+                  "operator": "===",
+                  "left": {
+                    "type": "Identifier",
+                    "name": "g"
+                  },
+                  "right": {
+                    "type": "BinaryExpression",
+                    "operator": "<",
+                    "left": {
+                      "type": "Identifier",
+                      "name": "h"
+                    },
+                    "right": {
+                      "type": "BinaryExpression",
+                      "operator": "<<",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "i"
+                      },
+                      "right": {
+                        "type": "BinaryExpression",
+                        "operator": "+",
+                        "left": {
+                          "type": "Identifier",
+                          "name": "j"
+                        },
+                        "right": {
+                          "type": "BinaryExpression",
+                          "operator": "%",
+                          "left": {
+                            "type": "Identifier",
+                            "name": "k"
+                          },
+                          "right": {
+                            "type": "BinaryExpression",
+                            "operator": "**",
+                            "left": {
+                              "type": "Identifier",
+                              "name": "l"
+                            },
+                            "right": {
+                              "type": "UnaryExpression",
+                              "operator": "!",
+                              "argument": {
+                                "type": "UpdateExpression",
+                                "operator": "++",
+                                "argument": {
+                                  "type": "Identifier",
+                                  "name": "m"
+                                },
+                                "prefix": false
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "consequent": {
+          "type": "Identifier",
+          "name": "b"
+        },
+        "alternate": {
+          "type": "Identifier",
+          "name": "c"
+        }
+      }
+    }
+  ]
+}

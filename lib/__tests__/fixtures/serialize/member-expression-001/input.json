@@ -1,0 +1,28 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "MemberExpression",
+        "object": {
+          "type": "MemberExpression",
+          "object": {
+            "type": "Identifier",
+            "name": "a"
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "b"
+          },
+          "computed": false
+        },
+        "property": {
+          "type": "Identifier",
+          "name": "c"
+        },
+        "computed": false
+      }
+    }
+  ]
+}
