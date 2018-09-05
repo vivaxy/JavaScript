@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/vivaxy/JavaScript/compare/v0.12.1...v0.13.0) (2018-09-05)
+
+
+### Features
+
+* **ArrayExpression:** :sparkles:Support muliple arguments ([c748e8a](https://github.com/vivaxy/JavaScript/commit/c748e8a))
+
+
+
 <a name="0.12.1"></a>
 ## [0.12.1](https://github.com/vivaxy/JavaScript/compare/v0.12.0...v0.12.1) (2018-09-05)
 
