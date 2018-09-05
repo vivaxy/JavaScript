@@ -1,0 +1,28 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "LogicalExpression",
+        "operator": "&&",
+        "left": {
+          "type": "LogicalExpression",
+          "operator": "&&",
+          "left": {
+            "type": "Literal",
+            "value": false
+          },
+          "right": {
+            "type": "Literal",
+            "value": null
+          }
+        },
+        "right": {
+          "type": "Identifier",
+          "name": "undefined"
+        }
+      }
+    }
+  ]
+}
