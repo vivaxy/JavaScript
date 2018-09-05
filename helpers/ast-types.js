@@ -18,6 +18,8 @@ const astTypes = {
   OBJECT_EXPRESSION: 'ObjectExpression',
   PROPERTY: 'Property',
   ARRAY_EXPRESSION: 'ArrayExpression',
+  CALL_EXPRESSION: 'CallExpression',
+  ASSIGNMENT_EXPRESSION: 'AssignmentExpression',
 };
 
 module.exports = astTypes;
