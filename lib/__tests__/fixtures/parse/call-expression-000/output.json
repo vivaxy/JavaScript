@@ -40,8 +40,7 @@
           "arguments": [
             {
               "type": "Identifier",
-              "name": "icon",
-              "paren": true
+              "name": "icon"
             }
           ]
         },
