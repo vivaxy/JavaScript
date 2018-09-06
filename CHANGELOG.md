@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.1"></a>
+## [0.13.1](https://github.com/vivaxy/JavaScript/compare/v0.13.0...v0.13.1) (2018-09-06)
+
+
+### Bug Fixes
+
+* **ArrayExpression:** :bug:Fix with ConditionalExpression ([766c02c](https://github.com/vivaxy/JavaScript/commit/766c02c))
+* **traverse.js:** :bug:CALL_EXPRESSION ([d2d955c](https://github.com/vivaxy/JavaScript/commit/d2d955c))
+
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/vivaxy/JavaScript/compare/v0.12.1...v0.13.0) (2018-09-05)
 
