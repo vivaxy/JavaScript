@@ -5,3 +5,4 @@ coverage.lcov
 coverage
 .idea
 .DS_Store
+benchmark
