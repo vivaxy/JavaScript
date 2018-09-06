@@ -23,10 +23,10 @@ JavaScript parser, executor and serializer.
 
 ## Benchmark
 
-@vivaxy/javascript#parse x 3,677 ops/sec ±2.77% (85 runs sampled)
+@vivaxy/javascript#parse x 6,112 ops/sec ±2.48% (91 runs sampled)
 
-@babel/parser#parse x 1,934 ops/sec ±3.35% (82 runs sampled)
+@babel/parser#parse x 4,067 ops/sec ±2.24% (86 runs sampled)
 
-acorn#parse x 1,187 ops/sec ±7.09% (86 runs sampled)
+acorn#parse x 2,119 ops/sec ±3.92% (83 runs sampled)
 
 Fastest is @vivaxy/javascript#parse

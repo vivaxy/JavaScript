@@ -15,7 +15,7 @@ const { parse: acornParse } = require('acorn');
 const suite = new Benchmark.Suite();
 
 (async () => {
-  const dirs = ['execute', 'parse', 'serialize'];
+  const dirs = ['parse'];
   const baseDir = path.join(__dirname, '..', 'lib', '__tests__', 'fixtures');
   const getTestCaseTasks = dirs.map((dir) => {
     const task = async () => {
