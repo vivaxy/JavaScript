@@ -1,0 +1,51 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "ArrayExpression",
+        "elements": [
+          {
+            "type": "ConditionalExpression",
+            "test": {
+              "type": "BinaryExpression",
+              "operator": "<=",
+              "left": {
+                "type": "Identifier",
+                "name": "scrollTop"
+              },
+              "right": {
+                "type": "Literal",
+                "value": 0
+              }
+            },
+            "consequent": {
+              "type": "Literal",
+              "value": "no-padding"
+            },
+            "alternate": {
+              "type": "Literal",
+              "value": ""
+            }
+          },
+          {
+            "type": "ConditionalExpression",
+            "test": {
+              "type": "Identifier",
+              "name": "isIphoneX"
+            },
+            "consequent": {
+              "type": "Literal",
+              "value": "add-padding"
+            },
+            "alternate": {
+              "type": "Literal",
+              "value": ""
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
