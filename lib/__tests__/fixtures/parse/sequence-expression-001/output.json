@@ -1,0 +1,29 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "SequenceExpression",
+        "expressions": [
+          {
+            "type": "Literal",
+            "value": 1
+          },
+          {
+            "type": "BinaryExpression",
+            "operator": "===",
+            "left": {
+              "type": "Literal",
+              "value": 2
+            },
+            "right": {
+              "type": "Literal",
+              "value": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
