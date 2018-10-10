@@ -21,6 +21,14 @@ JavaScript parser, executor and serializer.
 [codecov-image]: https://img.shields.io/codecov/c/github/vivaxy/JavaScript.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/vivaxy/JavaScript
 
+## Package Size
+
+@vivaxy/javascript   15.5k(gizpped    4k)
+
+@babel/parser       187.2k(gzipped 45.4k)
+
+acorn                92.8k(gzipped 26.7k)
+
 ## Benchmark
 
 @vivaxy/javascript#parse x 5,761 ops/sec ±0.28% (91 runs sampled)
