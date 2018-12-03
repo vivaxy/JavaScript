@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.14.1"></a>
+## [0.14.1](https://github.com/vivaxy/JavaScript/compare/v0.14.0...v0.14.1) (2018-12-03)
+
+
+### Bug Fixes
+
+* **parse:** :bug:Fix `[]` not supported ([2fc25aa](https://github.com/vivaxy/JavaScript/commit/2fc25aa))
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/vivaxy/JavaScript/compare/v0.13.1...v0.14.0) (2018-09-29)
 
