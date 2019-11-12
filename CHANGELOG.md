@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.14.3"></a>
+## [0.14.3](https://github.com/vivaxy/JavaScript/compare/v0.14.2...v0.14.3) (2019-11-12)
+
+
+### Bug Fixes
+
+* **parse:** :bug: Fix support for multiple unary operators ([f557d7b](https://github.com/vivaxy/JavaScript/commit/f557d7b))
+
+
+
 <a name="0.14.2"></a>
 ## [0.14.2](https://github.com/vivaxy/JavaScript/compare/v0.14.1...v0.14.2) (2019-08-30)
 
