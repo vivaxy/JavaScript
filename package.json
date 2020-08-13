@@ -4,8 +4,8 @@
   "description": "JavaScript Complier and Executor",
   "main": "index.js",
   "scripts": {
-    "test": "ava",
-    "coverage": "nyc npm run test && nyc report --reporter=html && nyc report --reporter=lcov > coverage.lcov",
+    "test": "jest",
+    "coverage": "jest --collect-coverage",
     "release:beta": "npm run coverage && standard-version --prerelease beta && npm publish --tag beta && git push --follow-tags",
     "release": "npm run coverage && standard-version && npm publish && git push --follow-tags",
     "precommit": "lint-staged",
@@ -24,20 +24,31 @@
   "devDependencies": {
     "@babel/parser": "^7.0.0",
     "acorn": "^7.0.0",
-    "ava": "^3.0.0",
     "benchmark": "^2.1.4",
     "fast-glob": "^3.1.1",
     "fs-extra": "^9.0.0",
     "husky": "^4.0.0",
+    "jest": "^26.4.0",
     "lint-staged": "^10.0.0",
-    "nyc": "^15.0.0",
     "prettier": "^2.0.0",
     "standard-version": "^8.0.0"
   },
   "lint-staged": {
     "**/**.{js,json,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/**/__tests__/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/__tests__/**/*.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/__tests__/helpers/setup-after-env.js"
     ]
   }
 }
