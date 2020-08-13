@@ -44,7 +44,9 @@
       "<rootDir>/**/__tests__/**/*.test.js"
     ],
     "collectCoverageFrom": [
-      "**/*.js",
+      "helpers/**/*.js",
+      "lib/**/*.js",
+      "index.js",
       "!**/__tests__/**/*.js"
     ],
     "setupFilesAfterEnv": [
