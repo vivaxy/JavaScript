@@ -8,6 +8,7 @@ JavaScript parser, executor and serializer.
 [![MIT License][license-image]][license-url]
 [![Standard Version][standard-version-image]][standard-version-url]
 [![Codecov][codecov-image]][codecov-url]
+[![DOI](https://zenodo.org/badge/142413828.svg?style=flat-square)](https://zenodo.org/badge/latestdoi/142413828)
 
 [travis-image]: https://img.shields.io/travis/vivaxy/JavaScript.svg?style=flat-square
 [travis-url]: https://travis-ci.org/vivaxy/JavaScript
